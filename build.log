@@ -1,0 +1,145 @@
+--progress is a global compose flag, better use `docker compose --progress xx build ...
+ Image dentafix-crm-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 528B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 5.08kB 0.0s done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-alpine
+#3 ...
+
+#4 [auth] library/node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-alpine
+#3 DONE 1.4s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 182B done
+#5 DONE 0.0s
+
+#6 [deps 2/5] WORKDIR /app
+#6 CACHED
+
+#7 [deps 1/5] FROM docker.io/library/node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#7 resolve docker.io/library/node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 0.0s done
+#7 CACHED
+
+#8 [internal] load build context
+#8 transferring context: 123.02kB 0.1s done
+#8 DONE 0.1s
+
+#9 [deps 3/5] RUN corepack enable && corepack prepare pnpm@latest --activate
+#9 0.943 Preparing pnpm@latest for immediate activation...
+#9 DONE 1.7s
+
+#10 [deps 4/5] COPY pnpm-lock.yaml package.json ./
+#10 DONE 0.0s
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 0.123 ! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-11.20.0.tgz
+#11 3.036 ? Verifying lockfile against supply-chain policies (1896 entries)...
+#11 4.218 
+#11 4.218    ╭──────────────────────────────────────────────╮
+#11 4.218    │                                              │
+#11 4.218    │     Update available! 11.20.0 → 12.3.4.      │
+#11 4.218    │     Changelog: https://pnpm.io/v/12.3.4      │
+#11 4.218    │   To update, run: corepack use pnpm@12.3.4   │
+#11 4.218    │                                              │
+#11 4.218    ╰──────────────────────────────────────────────╯
+#11 4.218 
+#11 ...
+
+#12 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#12 1.583 ( 1/16) Installing brotli-libs (1.2.0-r1)
+#12 1.712 ( 2/16) Installing c-ares (1.34.8-r0)
+#12 1.788 ( 3/16) Installing libunistring (1.4.2-r0)
+#12 1.941 ( 4/16) Installing libidn2 (2.3.8-r0)
+#12 2.028 ( 5/16) Installing nghttp2-libs (1.69.0-r0)
+#12 2.148 ( 6/16) Installing libpsl (0.21.5-r3)
+#12 2.231 ( 7/16) Installing zstd-libs (1.5.7-r2)
+#12 3.056 ( 8/16) Installing libcurl (8.22.0-r0)
+#12 3.559 ( 9/16) Installing curl (8.22.0-r0)
+#12 3.986 (10/16) Installing postgresql-common (1.3-r0)
+#12 4.059   Executing postgresql-common-1.3-r0.pre-install
+#12 4.080 (11/16) Installing lz4-libs (1.10.0-r1)
+#12 4.350 (12/16) Installing libpq (18.6-r0)
+#12 4.610 (13/16) Installing ncurses-terminfo-base (6.6_p20260516-r0)
+#12 4.778 (14/16) Installing libncursesw (6.6_p20260516-r0)
+#12 5.039 (15/16) Installing readline (8.3.3-r1)
+#12 5.833 (16/16) Installing postgresql18-client (18.6-r0)
+#12 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 22.39 [WARN] Request took 15389ms: https://registry.npmjs.org/@prisma%2Fclient
+#11 22.87 [WARN] Request took 15835ms: https://registry.npmjs.org/@prisma%2Fdebug
+#11 23.42 [WARN] Request took 16306ms: https://registry.npmjs.org/@prisma%2Fget-platform
+#11 23.67 [WARN] Request took 10579ms: https://registry.npmjs.org/@typescript-eslint%2Fvisitor-keys
+#11 ...
+
+#12 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#12 29.51 Executing busybox-1.37.0-r31.trigger
+#12 29.56 Executing postgresql-common-1.3-r0.trigger
+#12 29.57 * Setting postgresql18 as the default version
+#12 29.72 * find: /usr/share/man: No such file or directory
+#12 29.73 * WARNING: opening from cache https://dl-cdn.alpinelinux.org/alpine/v3.24/main/aarch64/APKINDEX.tar.gz: No such file or directory
+#12 29.73 * WARNING: opening from cache https://dl-cdn.alpinelinux.org/alpine/v3.24/community/aarch64/APKINDEX.tar.gz: No such file or directory
+#12 29.74 OK: 21.5 MiB in 34 packages
+#12 DONE 30.2s
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 ...
+
+#13 [runner  3/14] RUN addgroup --system --gid 1001 nodejs &&     adduser --system --uid 1001 nextjs
+#13 DONE 0.1s
+
+#14 [runner  4/14] WORKDIR /opt/tools
+#14 DONE 0.0s
+
+#15 [runner  5/14] RUN printf '{"name":"nextcrm-tools","version":"0.0.0","private":true}\n' > package.json &&     npm install --no-audit --no-fund       prisma@7.6.0       @prisma/client@7.6.0       @prisma/adapter-pg@7.6.0       pg@8.18.0       tsx@4.21.0       dotenv@17.3.1       typescript@5.9.3 &&     npm cache clean --force
+#15 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 29.08 [WARN] Request took 21969ms: https://registry.npmjs.org/@prisma%2Fengines
+#11 30.48 ✓ Lockfile passes supply-chain policies (1896 entries in 27.4s)
+#11 30.54 [ERR_PNPM_LOCKFILE_CONFIG_MISMATCH] Cannot proceed with the frozen installation. The current "overrides" configuration doesn't match the value found in the lockfile
+#11 30.54 
+#11 30.54 Update your lockfile using "pnpm install --no-frozen-lockfile"
+#11 ERROR: process "/bin/sh -c pnpm install --frozen-lockfile" did not complete successfully: exit code: 1
+
+#15 [runner  5/14] RUN printf '{"name":"nextcrm-tools","version":"0.0.0","private":true}\n' > package.json &&     npm install --no-audit --no-fund       prisma@7.6.0       @prisma/client@7.6.0       @prisma/adapter-pg@7.6.0       pg@8.18.0       tsx@4.21.0       dotenv@17.3.1       typescript@5.9.3 &&     npm cache clean --force
+#15 CANCELED
+------
+ > [deps 5/5] RUN pnpm install --frozen-lockfile:
+4.218 
+22.39 [WARN] Request took 15389ms: https://registry.npmjs.org/@prisma%2Fclient
+22.87 [WARN] Request took 15835ms: https://registry.npmjs.org/@prisma%2Fdebug
+23.42 [WARN] Request took 16306ms: https://registry.npmjs.org/@prisma%2Fget-platform
+23.67 [WARN] Request took 10579ms: https://registry.npmjs.org/@typescript-eslint%2Fvisitor-keys
+29.08 [WARN] Request took 21969ms: https://registry.npmjs.org/@prisma%2Fengines
+30.48 ✓ Lockfile passes supply-chain policies (1896 entries in 27.4s)
+30.54 [ERR_PNPM_LOCKFILE_CONFIG_MISMATCH] Cannot proceed with the frozen installation. The current "overrides" configuration doesn't match the value found in the lockfile
+30.54 
+30.54 Update your lockfile using "pnpm install --no-frozen-lockfile"
+------
+Dockerfile:15
+
+--------------------
+
+  13 |     
+
+  14 |     # Install dependencies with frozen lockfile
+
+  15 | >>> RUN pnpm install --frozen-lockfile
+
+  16 |     
+
+  17 |     # ============================================
+
+--------------------
+
+failed to solve: process "/bin/sh -c pnpm install --frozen-lockfile" did not complete successfully: exit code: 1
+

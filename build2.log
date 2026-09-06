@@ -1,0 +1,538 @@
+--progress is a global compose flag, better use `docker compose --progress xx build ...
+ Image dentafix-crm-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 528B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 5.10kB 0.0s done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-alpine
+#3 DONE 0.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 182B done
+#4 DONE 0.0s
+
+#5 [deps 1/5] FROM docker.io/library/node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#5 resolve docker.io/library/node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 0.0s done
+#5 CACHED
+
+#6 [deps 2/5] WORKDIR /app
+#6 CACHED
+
+#7 [internal] load build context
+#7 ...
+
+#8 [deps 3/5] RUN corepack enable && corepack prepare pnpm@11.20.0 --activate
+#8 0.614 Preparing pnpm@11.20.0 for immediate activation...
+#8 DONE 3.6s
+
+#7 [internal] load build context
+#7 transferring context: 6.82MB 5.0s
+#7 transferring context: 13.97MB 9.7s done
+#7 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 ...
+
+#7 [internal] load build context
+#7 DONE 10.1s
+
+#10 [deps 4/5] COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
+#10 DONE 0.1s
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 0.945 ? Verifying lockfile against supply-chain policies (1896 entries)...
+#11 0.956 Lockfile is up to date, resolution step is skipped
+#11 1.134 Progress: resolved 1, reused 0, downloaded 0, added 0
+#11 1.311 Packages: +1755
+#11 1.311 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#11 2.134 Progress: resolved 1755, reused 0, downloaded 0, added 0
+#11 2.156 
+#11 2.156    ╭──────────────────────────────────────────────╮
+#11 2.156    │                                              │
+#11 2.156    │     Update available! 11.20.0 → 12.3.4.      │
+#11 2.156    │     Changelog: https://pnpm.io/v/12.3.4      │
+#11 2.156    │   To update, run: corepack use pnpm@12.3.4   │
+#11 2.156    │                                              │
+#11 2.156    ╰──────────────────────────────────────────────╯
+#11 2.156 
+#11 2.345 Packages are hard linked from the content-addressable store to the virtual store.
+#11 2.345   Content-addressable store is at: /root/.local/share/pnpm/store/v11
+#11 2.345   Virtual store is at:             node_modules/.pnpm
+#11 3.135 Progress: resolved 1755, reused 0, downloaded 22, added 22
+#11 3.770 [WARN] Tarball download average speed 8 KiB/s (size 8 KiB) is below 50 KiB/s: https://registry.npmjs.org/@radix-ui/react-tabs/-/react-tabs-1.1.13.tgz (GET)
+#11 4.135 Progress: resolved 1755, reused 0, downloaded 43, added 43
+#11 4.146 [WARN] Tarball download average speed 6 KiB/s (size 7 KiB) is below 50 KiB/s: https://registry.npmjs.org/@tiptap/starter-kit/-/starter-kit-3.20.5.tgz (GET)
+#11 4.634 [WARN] Tarball download average speed 22 KiB/s (size 40 KiB) is below 50 KiB/s: https://registry.npmjs.org/@radix-ui/react-toast/-/react-toast-1.2.15.tgz (GET)
+#11 5.137 Progress: resolved 1755, reused 0, downloaded 55, added 56
+#11 5.713 [WARN] Tarball download average speed 7 KiB/s (size 14 KiB) is below 50 KiB/s: https://registry.npmjs.org/mailparser/-/mailparser-3.9.3.tgz (GET)
+#11 6.143 Progress: resolved 1755, reused 0, downloaded 68, added 69
+#11 6.181 [WARN] Tarball download average speed 17 KiB/s (size 24 KiB) is below 50 KiB/s: https://registry.npmjs.org/react/-/react-19.2.4.tgz (GET)
+#11 6.237 [WARN] Tarball download average speed 15 KiB/s (size 24 KiB) is below 50 KiB/s: https://registry.npmjs.org/pg/-/pg-8.18.0.tgz (GET)
+#11 7.145 Progress: resolved 1755, reused 0, downloaded 80, added 81
+#11 7.302 [WARN] Tarball download average speed 2 KiB/s (size 10 KiB) is below 50 KiB/s: https://registry.npmjs.org/@react-email/markdown/-/markdown-0.0.18.tgz (GET)
+#11 8.126 [WARN] Tarball download average speed 5 KiB/s (size 31 KiB) is below 50 KiB/s: https://registry.npmjs.org/bcryptjs/-/bcryptjs-3.0.3.tgz (GET)
+#11 8.145 Progress: resolved 1755, reused 0, downloaded 103, added 104
+#11 8.294 [WARN] Tarball download average speed 5 KiB/s (size 27 KiB) is below 50 KiB/s: https://registry.npmjs.org/@tiptap/extension-link/-/extension-link-3.20.5.tgz (GET)
+#11 8.527 [WARN] Tarball download average speed 2 KiB/s (size 10 KiB) is below 50 KiB/s: https://registry.npmjs.org/next-themes/-/next-themes-0.4.6.tgz (GET)
+#11 9.146 Progress: resolved 1755, reused 0, downloaded 133, added 134
+#11 10.15 Progress: resolved 1755, reused 0, downloaded 177, added 179
+#11 11.15 Progress: resolved 1755, reused 0, downloaded 200, added 202
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 11.57 ( 1/16) Installing brotli-libs (1.2.0-r1)
+#9 12.13 ( 2/16) Installing c-ares (1.34.8-r0)
+#9 12.29 ( 3/16) Installing libunistring (1.4.2-r0)
+#9 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 12.15 Progress: resolved 1755, reused 0, downloaded 224, added 226
+#11 13.16 Progress: resolved 1755, reused 0, downloaded 234, added 236
+#11 14.16 Progress: resolved 1755, reused 0, downloaded 242, added 244
+#11 15.16 Progress: resolved 1755, reused 0, downloaded 263, added 265
+#11 16.16 Progress: resolved 1755, reused 0, downloaded 276, added 278
+#11 16.89 [WARN] Request took 11562ms: https://registry.npmjs.org/@esbuild%2Fnetbsd-x64
+#11 17.16 Progress: resolved 1755, reused 0, downloaded 297, added 299
+#11 17.70 [WARN] Tarball download average speed 28 KiB/s (size 42 KiB) is below 50 KiB/s: https://registry.npmjs.org/prosemirror-state/-/prosemirror-state-1.4.4.tgz (GET)
+#11 18.16 Progress: resolved 1755, reused 0, downloaded 313, added 315
+#11 18.95 [WARN] Tarball download average speed 35 KiB/s (size 164 KiB) is below 50 KiB/s: https://registry.npmjs.org/marked/-/marked-15.0.12.tgz (GET)
+#11 19.16 Progress: resolved 1755, reused 0, downloaded 328, added 329
+#11 20.01 [WARN] Request took 10304ms: https://registry.npmjs.org/@next%2Fswc-darwin-x64
+#11 20.16 Progress: resolved 1755, reused 0, downloaded 345, added 347
+#11 21.16 Progress: resolved 1755, reused 0, downloaded 354, added 356
+#11 22.16 Progress: resolved 1755, reused 0, downloaded 360, added 362
+#11 22.46 [WARN] Tarball download average speed 17 KiB/s (size 21 KiB) is below 50 KiB/s: https://registry.npmjs.org/@eslint/core/-/core-0.17.0.tgz (GET)
+#11 22.70 [WARN] Request took 12800ms: https://registry.npmjs.org/@next%2Fswc-win32-arm64-msvc
+#11 23.16 Progress: resolved 1755, reused 0, downloaded 386, added 388
+#11 23.36 [WARN] Tarball download average speed 28 KiB/s (size 78 KiB) is below 50 KiB/s: https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.9.1.tgz (GET)
+#11 24.17 Progress: resolved 1755, reused 0, downloaded 394, added 396
+#11 25.17 Progress: resolved 1755, reused 0, downloaded 419, added 421
+#11 26.09 [WARN] Tarball download average speed 47 KiB/s (size 489 KiB) is below 50 KiB/s: https://registry.npmjs.org/@tiptap/core/-/core-3.20.5.tgz (GET)
+#11 26.17 Progress: resolved 1755, reused 0, downloaded 441, added 442
+#11 27.17 Progress: resolved 1755, reused 0, downloaded 463, added 465
+#11 28.17 Progress: resolved 1755, reused 0, downloaded 484, added 486
+#11 29.18 Progress: resolved 1755, reused 0, downloaded 505, added 507
+#11 30.18 Progress: resolved 1755, reused 0, downloaded 518, added 520
+#11 30.70 [WARN] Tarball download average speed 48 KiB/s (size 121 KiB) is below 50 KiB/s: https://registry.npmjs.org/file-selector/-/file-selector-2.1.2.tgz (GET)
+#11 30.88 [WARN] Tarball download average speed 1 KiB/s (size 45 KiB) is below 50 KiB/s: https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.24.tgz (GET)
+#11 31.18 Progress: resolved 1755, reused 0, downloaded 525, added 526
+#11 32.18 Progress: resolved 1755, reused 0, downloaded 530, added 532
+#11 33.20 Progress: resolved 1755, reused 0, downloaded 536, added 538
+#11 33.24 [WARN] Tarball download average speed 37 KiB/s (size 459 KiB) is below 50 KiB/s: https://registry.npmjs.org/tar/-/tar-7.5.21.tgz (GET)
+#11 33.46 [WARN] Request took 16760ms: https://registry.npmjs.org/@prisma%2Fdriver-adapter-utils
+#11 33.96 [WARN] Tarball download average speed 28 KiB/s (size 133 KiB) is below 50 KiB/s: https://registry.npmjs.org/svix/-/svix-1.84.1.tgz (GET)
+#11 34.20 Progress: resolved 1755, reused 0, downloaded 543, added 545
+#11 35.21 Progress: resolved 1755, reused 0, downloaded 555, added 557
+#11 35.38 [WARN] Tarball download average speed 31 KiB/s (size 52 KiB) is below 50 KiB/s: https://registry.npmjs.org/commander/-/commander-14.0.3.tgz (GET)
+#11 35.80 [WARN] Request took 26206ms: https://registry.npmjs.org/@next%2Feslint-plugin-next
+#11 36.21 Progress: resolved 1755, reused 0, downloaded 576, added 578
+#11 36.87 [WARN] Request took 20149ms: https://registry.npmjs.org/@prisma%2Fengines-version
+#11 37.21 Progress: resolved 1755, reused 0, downloaded 600, added 602
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 47.61 ( 4/16) Installing libidn2 (2.3.8-r0)
+#9 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 38.01 [WARN] Request took 21149ms: https://registry.npmjs.org/@prisma%2Fget-platform
+#11 38.13 [WARN] Request took 10098ms: https://registry.npmjs.org/@tailwindcss%2Foxide
+#11 38.21 Progress: resolved 1755, reused 0, downloaded 637, added 639
+#11 39.21 Progress: resolved 1755, reused 0, downloaded 674, added 676
+#11 40.21 Progress: resolved 1755, reused 0, downloaded 696, added 698
+#11 41.22 Progress: resolved 1755, reused 0, downloaded 718, added 720
+#11 41.30 [WARN] Tarball download average speed 25 KiB/s (size 30 KiB) is below 50 KiB/s: https://registry.npmjs.org/vite-compatible-readable-stream/-/vite-compatible-readable-stream-3.6.1.tgz (GET)
+#11 41.87 [WARN] Tarball download average speed 34 KiB/s (size 46 KiB) is below 50 KiB/s: https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.19.0.tgz (GET)
+#11 42.49 [WARN] Request took 25945ms: https://registry.npmjs.org/@prisma%2Fclient
+#11 43.12 Progress: resolved 1755, reused 0, downloaded 735, added 737
+#11 43.17 [WARN] Tarball download average speed 21 KiB/s (size 28 KiB) is below 50 KiB/s: https://registry.npmjs.org/ws/-/ws-7.5.13.tgz (GET)
+#11 43.21 [WARN] Tarball download average speed 7 KiB/s (size 9 KiB) is below 50 KiB/s: https://registry.npmjs.org/denque/-/denque-2.1.0.tgz (GET)
+#11 43.21 [WARN] Tarball download average speed 34 KiB/s (size 84 KiB) is below 50 KiB/s: https://registry.npmjs.org/lightningcss/-/lightningcss-1.31.1.tgz (GET)
+#11 44.12 Progress: resolved 1755, reused 0, downloaded 758, added 760
+#11 45.15 [WARN] Request took 28477ms: https://registry.npmjs.org/@prisma%2Fdebug
+#11 45.18 Progress: resolved 1755, reused 0, downloaded 785, added 785
+#11 45.59 [WARN] Tarball download average speed 39 KiB/s (size 69 KiB) is below 50 KiB/s: https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.17.5.tgz (GET)
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 56.03 ( 5/16) Installing nghttp2-libs (1.69.0-r0)
+#9 59.35 ( 6/16) Installing libpsl (0.21.5-r3)
+#9 61.12 ( 7/16) Installing zstd-libs (1.5.7-r2)
+#9 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 45.89 [WARN] Request took 29142ms: https://registry.npmjs.org/@prisma%2Fengines
+#11 45.93 [WARN] Tarball download average speed 22 KiB/s (size 24 KiB) is below 50 KiB/s: https://registry.npmjs.org/fast-glob/-/fast-glob-3.3.1.tgz (GET)
+#11 46.18 Progress: resolved 1755, reused 0, downloaded 810, added 812
+#11 46.73 [WARN] Tarball download average speed 49 KiB/s (size 152 KiB) is below 50 KiB/s: https://registry.npmjs.org/jackspeak/-/jackspeak-4.2.3.tgz (GET)
+#11 46.86 [WARN] Request took 11088ms: https://registry.npmjs.org/@types%2Fnode
+#11 47.19 Progress: resolved 1755, reused 0, downloaded 841, added 843
+#11 47.90 [WARN] Request took 11261ms: https://registry.npmjs.org/@typescript-eslint%2Fvisitor-keys
+#11 48.26 Progress: resolved 1755, reused 0, downloaded 866, added 868
+#11 49.26 Progress: resolved 1755, reused 0, downloaded 898, added 900
+#11 50.26 Progress: resolved 1755, reused 0, downloaded 920, added 922
+#11 50.46 [WARN] Tarball download average speed 35 KiB/s (size 57 KiB) is below 50 KiB/s: https://registry.npmjs.org/@opentelemetry/instrumentation-http/-/instrumentation-http-0.218.0.tgz (GET)
+#11 50.92 [WARN] Tarball download average speed 36 KiB/s (size 83 KiB) is below 50 KiB/s: https://registry.npmjs.org/@opentelemetry/instrumentation/-/instrumentation-0.218.0.tgz (GET)
+#11 51.26 Progress: resolved 1755, reused 0, downloaded 947, added 949
+#11 51.42 [WARN] Request took 14825ms: https://registry.npmjs.org/@typescript-eslint%2Fscope-manager
+#11 52.65 Progress: resolved 1755, reused 0, downloaded 962, added 960
+#11 52.70 [WARN] Tarball download average speed 48 KiB/s (size 58 KiB) is below 50 KiB/s: https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz (GET)
+#11 53.65 Progress: resolved 1755, reused 0, downloaded 980, added 977
+#11 54.38 [WARN] Request took 37519ms: https://registry.npmjs.org/@prisma%2Ffetch-engine
+#11 54.64 Progress: resolved 1755, reused 0, downloaded 1035, added 1037
+#11 55.64 Progress: resolved 1755, reused 0, downloaded 1062, added 1064
+#11 56.38 [WARN] Request took 19746ms: https://registry.npmjs.org/@typescript-eslint%2Ftypes
+#11 56.93 Progress: resolved 1755, reused 0, downloaded 1086, added 1087
+#11 57.07 [WARN] Request took 17329ms: https://registry.npmjs.org/axe-core
+#11 57.65 Progress: resolved 1755, reused 0, downloaded 1119, added 1121
+#11 58.65 Progress: resolved 1755, reused 0, downloaded 1128, added 1126
+#11 59.65 Progress: resolved 1755, reused 0, downloaded 1155, added 1157
+#11 60.65 Progress: resolved 1755, reused 0, downloaded 1188, added 1190
+#11 61.66 Progress: resolved 1755, reused 0, downloaded 1204, added 1200
+#11 61.78 [WARN] Request took 25197ms: https://registry.npmjs.org/@typescript-eslint%2Fparser
+#11 62.52 [WARN] Request took 14730ms: https://registry.npmjs.org/electron-to-chromium
+#11 63.00 [WARN] GET https://registry.npmjs.org/next/-/next-16.2.11.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#11 63.86 Progress: resolved 1755, reused 0, downloaded 1206, added 1204
+#11 63.87 [WARN] GET https://registry.npmjs.org/react-icons/-/react-icons-5.5.0.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#11 63.87 [WARN] GET https://registry.npmjs.org/primereact/-/primereact-10.9.7.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#11 64.86 Progress: resolved 1755, reused 0, downloaded 1278, added 1280
+#11 65.87 Progress: resolved 1755, reused 0, downloaded 1289, added 1283
+#11 66.87 [WARN] Request took 30274ms: https://registry.npmjs.org/@typescript-eslint%2Feslint-plugin
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 77.90 ( 8/16) Installing libcurl (8.22.0-r0)
+#9 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 67.77 Progress: resolved 1755, reused 0, downloaded 1290, added 1283
+#11 68.77 Progress: resolved 1755, reused 0, downloaded 1314, added 1287
+#11 69.80 Progress: resolved 1755, reused 0, downloaded 1324, added 1287
+#11 70.80 Progress: resolved 1755, reused 0, downloaded 1357, added 1291
+#11 71.80 Progress: resolved 1755, reused 0, downloaded 1358, added 1291
+#11 72.80 Progress: resolved 1755, reused 0, downloaded 1399, added 1295
+#11 75.91 Progress: resolved 1755, reused 0, downloaded 1400, added 1295
+#11 76.59 [WARN] Request took 11514ms: https://registry.npmjs.org/react-dom
+#11 76.90 Progress: resolved 1755, reused 0, downloaded 1401, added 1295
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 87.54 ( 9/16) Installing curl (8.22.0-r0)
+#9 92.51 (10/16) Installing postgresql-common (1.3-r0)
+#9 92.72   Executing postgresql-common-1.3-r0.pre-install
+#9 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 77.80 [WARN] Request took 13563ms: https://registry.npmjs.org/prisma
+#11 78.06 Progress: resolved 1755, reused 0, downloaded 1408, added 1295
+#11 78.47 [WARN] Request took 14438ms: https://registry.npmjs.org/playwright
+#11 79.06 Progress: resolved 1755, reused 0, downloaded 1410, added 1295
+#11 79.57 [WARN] Request took 14494ms: https://registry.npmjs.org/react-hook-form
+#11 80.22 [WARN] Request took 11934ms: https://registry.npmjs.org/tailwindcss
+#11 82.12 Progress: resolved 1755, reused 0, downloaded 1410, added 1296
+#11 83.19 Progress: resolved 1755, reused 0, downloaded 1455, added 1299
+#11 84.18 Progress: resolved 1755, reused 0, downloaded 1456, added 1299
+#11 85.13 [WARN] GET https://registry.npmjs.org/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-16.2.11.tgz error (23). Will retry in 10 seconds. 2 retries left.
+#11 86.57 Progress: resolved 1755, reused 0, downloaded 1457, added 1299
+#11 87.31 ✓ Lockfile passes supply-chain policies (1896 entries in 1m 26.3s)
+#11 87.60 Progress: resolved 1755, reused 0, downloaded 1479, added 1303
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 98.29 (11/16) Installing lz4-libs (1.10.0-r1)
+#9 99.08 (12/16) Installing libpq (18.6-r0)
+#9 100.1 (13/16) Installing ncurses-terminfo-base (6.6_p20260516-r0)
+#9 100.5 (14/16) Installing libncursesw (6.6_p20260516-r0)
+#9 101.3 (15/16) Installing readline (8.3.3-r1)
+#9 101.8 (16/16) Installing postgresql18-client (18.6-r0)
+#9 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 93.09 Progress: resolved 1755, reused 0, downloaded 1504, added 1303
+#11 94.09 Progress: resolved 1755, reused 0, downloaded 1552, added 1307
+#11 98.60 Progress: resolved 1755, reused 0, downloaded 1584, added 1311
+#11 98.64 [WARN] Tarball download average speed 23 KiB/s (size 109 KiB) is below 50 KiB/s: https://registry.npmjs.org/yaml/-/yaml-2.8.3.tgz (GET)
+#11 98.65 [WARN] Tarball download average speed 13 KiB/s (size 59 KiB) is below 50 KiB/s: https://registry.npmjs.org/jackspeak/-/jackspeak-3.4.3.tgz (GET)
+#11 98.66 [WARN] Tarball download average speed 22 KiB/s (size 99 KiB) is below 50 KiB/s: https://registry.npmjs.org/path-scurry/-/path-scurry-1.11.1.tgz (GET)
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 105.5 Executing busybox-1.37.0-r31.trigger
+#9 108.8 Executing postgresql-common-1.3-r0.trigger
+#9 108.9 * Setting postgresql18 as the default version
+#9 109.1 * find: /usr/share/man: No such file or directory
+#9 115.2 * WARNING: opening from cache https://dl-cdn.alpinelinux.org/alpine/v3.24/main/aarch64/APKINDEX.tar.gz: No such file or directory
+#9 118.3 * WARNING: opening from cache https://dl-cdn.alpinelinux.org/alpine/v3.24/community/aarch64/APKINDEX.tar.gz: No such file or directory
+#9 118.4 OK: 21.5 MiB in 34 packages
+#9 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 108.2 Progress: resolved 1755, reused 0, downloaded 1620, added 1315
+#11 109.2 Progress: resolved 1755, reused 0, downloaded 1741, added 1454
+#11 110.2 Progress: resolved 1755, reused 0, downloaded 1746, added 1748
+#11 121.3 Progress: resolved 1755, reused 0, downloaded 1747, added 1748
+#11 121.3 [WARN] Tarball download average speed 35 KiB/s (size 428 KiB) is below 50 KiB/s: https://registry.npmjs.org/@babel/parser/-/parser-7.29.7.tgz (GET)
+#11 121.3 [WARN] Tarball download average speed 39 KiB/s (size 484 KiB) is below 50 KiB/s: https://registry.npmjs.org/axios/-/axios-1.18.1.tgz (GET)
+#11 121.3 [WARN] Tarball download average speed 15 KiB/s (size 192 KiB) is below 50 KiB/s: https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz (GET)
+#11 ...
+
+#9 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#9 DONE 131.7s
+
+#12 [runner  3/14] RUN addgroup --system --gid 1001 nodejs &&     adduser --system --uid 1001 nextjs
+#12 DONE 1.6s
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 122.0 Progress: resolved 1755, reused 0, downloaded 1751, added 1753
+#11 ...
+
+#13 [runner  4/14] WORKDIR /opt/tools
+#13 DONE 0.3s
+
+#14 [runner  5/14] RUN printf '{"name":"nextcrm-tools","version":"0.0.0","private":true}\n' > package.json &&     npm install --no-audit --no-fund       prisma@7.6.0       @prisma/client@7.6.0       @prisma/adapter-pg@7.6.0       pg@8.18.0       tsx@4.21.0       dotenv@17.3.1       typescript@5.9.3 &&     npm cache clean --force
+#14 ...
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 130.5 Progress: resolved 1755, reused 0, downloaded 1752, added 1753
+#11 130.9 Progress: resolved 1755, reused 0, downloaded 1753, added 1755, done
+#11 131.8 .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+#11 131.8 .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+#11 131.8 .../node_modules/@swc/core postinstall$ node postinstall.js
+#11 132.5 .../node_modules/msw postinstall$ node -e "import('./config/scripts/postinstall.js').catch(() => void 0)"
+#11 132.5 .../esbuild@0.28.1/node_modules/esbuild postinstall$ node install.js
+#11 132.6 .../node_modules/@swc/core postinstall: Done
+#11 132.6 .../node_modules/msw postinstall: Done
+#11 132.7 .../node_modules/unrs-resolver postinstall: Done
+#11 132.7 .../esbuild@0.28.1/node_modules/esbuild postinstall: Done
+#11 132.7 .../node_modules/aws-crt install$ node ./scripts/install.js
+#11 132.7 .../bcrypt@6.0.0/node_modules/bcrypt install$ node-gyp-build
+#11 132.8 .../node_modules/aws-crt install: The binding already exists, skip rebuilding. To rebuild the native addon, please run install.js with `--rebuild`
+#11 132.8 .../node_modules/aws-crt install: Done
+#11 132.8 .../node_modules/@parcel/watcher install$ node scripts/build-from-source.js
+#11 132.9 .../bcrypt@6.0.0/node_modules/bcrypt install: Done
+#11 132.9 .../node_modules/@parcel/watcher install: Done
+#11 136.1 .../node_modules/@prisma/engines postinstall: Done
+#11 136.7 .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+#11 136.8 .../node_modules/prisma preinstall: Done
+#11 137.5 
+#11 137.5 dependencies:
+#11 137.5 + @aws-sdk/client-s3 3.1014.0
+#11 137.5 + @aws-sdk/s3-request-presigner 3.1014.0
+#11 137.5 + @aws-sdk/signature-v4-crt 3.1011.0
+#11 137.5 + @dnd-kit/core 6.3.1
+#11 137.5 + @dnd-kit/modifiers 9.0.0
+#11 137.5 + @dnd-kit/sortable 10.0.0
+#11 137.5 + @dnd-kit/utilities 3.2.2
+#11 137.5 + @hookform/resolvers 5.2.2
+#11 137.5 + @mendable/firecrawl-js 1.29.3
+#11 137.5 + @modelcontextprotocol/sdk 1.26.0
+#11 137.5 + @openai/agents 0.8.0
+#11 137.5 + @prisma/adapter-pg 7.6.0
+#11 137.5 + @prisma/client 7.6.0
+#11 137.5 + @radix-ui/react-avatar 1.1.11
+#11 137.5 + @radix-ui/react-checkbox 1.3.3
+#11 137.5 + @radix-ui/react-collapsible 1.1.12
+#11 137.5 + @radix-ui/react-dialog 1.1.15
+#11 137.5 + @radix-ui/react-dropdown-menu 2.1.16
+#11 137.5 + @radix-ui/react-hover-card 1.1.15
+#11 137.5 + @radix-ui/react-icons 1.3.2
+#11 137.5 + @radix-ui/react-label 2.1.8
+#11 137.5 + @radix-ui/react-popover 1.1.15
+#11 137.5 + @radix-ui/react-scroll-area 1.2.10
+#11 137.5 + @radix-ui/react-select 2.2.6
+#11 137.5 + @radix-ui/react-separator 1.1.8
+#11 137.5 + @radix-ui/react-slot 1.2.4
+#11 137.5 + @radix-ui/react-switch 1.2.6
+#11 137.5 + @radix-ui/react-tabs 1.1.13
+#11 137.5 + @radix-ui/react-toast 1.2.15
+#11 137.5 + @radix-ui/react-tooltip 1.2.8
+#11 137.5 + @react-email/components 1.0.9
+#11 137.5 + @react-email/markdown 0.0.18
+#11 137.5 + @react-email/render 2.0.4
+#11 137.5 + @react-pdf/renderer 4.3.2
+#11 137.5 + @tailwindcss/postcss 4.2.1
+#11 137.5 + @tanstack/react-table 8.21.3
+#11 137.5 + @tiptap/extension-link 3.20.5
+#11 137.5 + @tiptap/extension-underline 3.20.5
+#11 137.5 + @tiptap/pm 3.20.5
+#11 137.5 + @tiptap/react 3.20.5
+#11 137.5 + @tiptap/starter-kit 3.20.5
+#11 137.5 + @upstash/ratelimit 2.0.8
+#11 137.5 + @upstash/redis 1.37.0
+#11 137.5 + ai 6.0.116
+#11 137.5 + autoprefixer 10.4.24
+#11 137.5 + aws-crt 1.29.0
+#11 137.5 + bcrypt 6.0.0
+#11 137.5 + bcryptjs 3.0.3
+#11 137.5 + better-auth 1.6.25
+#11 137.5 + class-variance-authority 0.7.1
+#11 137.5 + clsx 2.1.1
+#11 137.5 + cmdk 1.1.1
+#11 137.5 + date-fns 4.1.0
+#11 137.5 + dayjs 1.11.19
+#11 137.5 + decimal.js 10.6.0
+#11 137.5 + e2b 2.18.0
+#11 137.5 + encoding 0.1.13
+#11 137.5 + entities 7.0.1
+#11 137.5 + eslint 9.39.4
+#11 137.5 + eslint-config-next 16.1.6
+#11 137.5 + exceljs 4.4.0
+#11 137.5 + form-data 4.0.6
+#11 137.5 + geist 1.7.0
+#11 137.5 + googleapis 173.0.0
+#11 137.5 + imap 0.8.19
+#11 137.5 + inngest 4.0.2
+#11 137.5 + input-otp 1.4.2
+#11 137.5 + ipaddr.js 2.4.0
+#11 137.5 + jotai 2.18.1
+#11 137.5 + lucide-react 0.574.0
+#11 137.5 + mailparser 3.9.3
+#11 137.5 + mailtrap 4.7.0
+#11 137.5 + mammoth 1.12.0
+#11 137.5 + mcp-handler 1.1.0
+#11 137.5 + moment 2.30.1
+#11 137.5 + mongodb 7.1.0
+#11 137.5 + next 16.2.11
+#11 137.5 + next-intl 4.11.1
+#11 137.5 + next-themes 0.4.6
+#11 137.5 + nodemailer 9.0.1
+#11 137.5 + openai 6.32.0
+#11 137.5 + papaparse 5.5.3
+#11 137.5 + pdf-parse 2.4.5
+#11 137.5 + pg 8.18.0
+#11 137.5 + postcss 8.5.23
+#11 137.5 + primeicons 7.0.0
+#11 137.5 + primereact 10.9.7
+#11 137.5 + react 19.2.4
+#11 137.5 + react-day-picker 9.13.2
+#11 137.5 + react-doc-viewer 0.1.15
+#11 137.5 + react-dom 19.2.4
+#11 137.5 + react-dropzone 15.0.0
+#11 137.5 + react-hook-form 7.71.2
+#11 137.5 + react-hot-toast 2.6.0
+#11 137.5 + react-icons 5.5.0
+#11 137.5 + react-resizable-panels 4.7.3
+#11 137.5 + react-youtube 10.1.0
+#11 137.5 + recharts 2.15.4
+#11 137.5 + resend 6.9.2
+#11 137.5 + sanitize-html 2.17.5
+#11 137.5 + sharp 0.35.3
+#11 137.5 + sonner 2.0.7
+#11 137.5 + swr 2.4.0
+#11 137.5 + tailwind-merge 3.5.0
+#11 137.5 + tailwindcss 4.2.1
+#11 137.5 + tailwindcss-animate 1.0.7
+#11 137.5 + vaul 1.1.2
+#11 137.5 + xmlbuilder2 4.0.3
+#11 137.5 + zod 4.3.6
+#11 137.5 
+#11 137.5 devDependencies:
+#11 137.5 + @playwright/test 1.58.2
+#11 137.5 + @types/bcrypt 6.0.0
+#11 137.5 + @types/bcryptjs 3.0.0
+#11 137.5 + @types/imap 0.8.43
+#11 137.5 + @types/jest 30.0.0
+#11 137.5 + @types/mailparser 3.4.6
+#11 137.5 + @types/node 25.5.0
+#11 137.5 + @types/nodemailer 7.0.11
+#11 137.5 + @types/papaparse 5.5.2
+#11 137.5 + @types/pdf-parse 1.1.5
+#11 137.5 + @types/pg 8.16.0
+#11 137.5 + @types/react <- types-react 19.0.0-rc.1
+#11 137.5 + @types/react-dom <- types-react-dom 19.0.0-rc.1
+#11 137.5 + @types/sanitize-html 2.16.1
+#11 137.5 + dotenv 17.3.1
+#11 137.5 + jest 30.3.0
+#11 137.5 + jest-environment-node 30.3.0
+#11 137.5 + prisma 7.6.0
+#11 137.5 + shadcn 3.8.5
+#11 137.5 + ts-jest 29.4.6
+#11 137.5 + ts-node 10.9.2
+#11 137.5 + tsx 4.21.0
+#11 137.5 + typescript 5.9.3
+#11 137.5 
+#11 ...
+
+#14 [runner  5/14] RUN printf '{"name":"nextcrm-tools","version":"0.0.0","private":true}\n' > package.json &&     npm install --no-audit --no-fund       prisma@7.6.0       @prisma/client@7.6.0       @prisma/adapter-pg@7.6.0       pg@8.18.0       tsx@4.21.0       dotenv@17.3.1       typescript@5.9.3 &&     npm cache clean --force
+#14 15.21 npm error code EROFS
+#14 15.21 npm error syscall write
+#14 15.21 npm error errno -30
+#14 15.21 npm error rofs EROFS: read-only file system, write
+#14 15.21 npm error rofs Often virtualized file systems, or other file systems
+#14 15.21 npm error rofs that don't support symlinks, give this error.
+#14 15.21 npm notice
+#14 15.21 npm notice New major version of npm available! 10.9.8 -> 12.0.2
+#14 15.21 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+#14 15.21 npm notice To update run: npm install -g npm@12.0.2
+#14 15.21 npm notice
+#14 15.21 npm error A complete log of this run can be found in: /root/.npm/_logs/2026-09-06T21_06_52_958Z-debug-0.log
+#14 ERROR: error committing khx7260xvss10je36yx6lt7q8: write /var/lib/docker/buildkit/containerd-overlayfs/metadata_v2.db: read-only file system
+
+#11 [deps 5/5] RUN pnpm install --frozen-lockfile
+#11 138.6 [EIO] EIO: i/o error, fsync
+#11 138.6 
+#11 138.6 
+#11 138.6 
+#11 ERROR: error committing fogjt66o4oh7dtn7v7mch4wrd: write /var/lib/docker/buildkit/containerd-overlayfs/metadata_v2.db: read-only file system
+------
+ > [deps 5/5] RUN pnpm install --frozen-lockfile:
+137.5 + shadcn 3.8.5
+137.5 + ts-jest 29.4.6
+137.5 + ts-node 10.9.2
+137.5 + tsx 4.21.0
+137.5 + typescript 5.9.3
+137.5 
+138.6 [EIO] EIO: i/o error, fsync
+138.6 
+138.6 
+138.6 
+------
+------
+ > [runner  5/14] RUN printf '{"name":"nextcrm-tools","version":"0.0.0","private":true}\n' > package.json &&     npm install --no-audit --no-fund       prisma@7.6.0       @prisma/client@7.6.0       @prisma/adapter-pg@7.6.0       pg@8.18.0       tsx@4.21.0       dotenv@17.3.1       typescript@5.9.3 &&     npm cache clean --force:
+15.21 npm error errno -30
+15.21 npm error rofs EROFS: read-only file system, write
+15.21 npm error rofs Often virtualized file systems, or other file systems
+15.21 npm error rofs that don't support symlinks, give this error.
+15.21 npm notice
+15.21 npm notice New major version of npm available! 10.9.8 -> 12.0.2
+15.21 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+15.21 npm notice To update run: npm install -g npm@12.0.2
+15.21 npm notice
+15.21 npm error A complete log of this run can be found in: /root/.npm/_logs/2026-09-06T21_06_52_958Z-debug-0.log
+------
+Dockerfile:80
+
+--------------------
+
+  79 |     WORKDIR /opt/tools
+
+  80 | >>> RUN printf '{"name":"nextcrm-tools","version":"0.0.0","private":true}\n' > package.json && \
+
+  81 | >>>     npm install --no-audit --no-fund \
+
+  82 | >>>       prisma@7.6.0 \
+
+  83 | >>>       @prisma/client@7.6.0 \
+
+  84 | >>>       @prisma/adapter-pg@7.6.0 \
+
+  85 | >>>       pg@8.18.0 \
+
+  86 | >>>       tsx@4.21.0 \
+
+  87 | >>>       dotenv@17.3.1 \
+
+  88 | >>>       typescript@5.9.3 && \
+
+  89 | >>>     npm cache clean --force
+
+  90 |     
+
+--------------------
+
+failed to solve: error committing khx7260xvss10je36yx6lt7q8: write /var/lib/docker/buildkit/containerd-overlayfs/metadata_v2.db: read-only file system
+

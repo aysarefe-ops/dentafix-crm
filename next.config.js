@@ -5,6 +5,9 @@ const withNextIntl = require("next-intl/plugin")(
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
+  env: {
+    NEXT_PUBLIC_APP_NAME: "DentaFIX CRM",
+  },
   serverExternalPackages: ["pdf-parse", "pdfjs-dist"],
   images: {
     remotePatterns: [

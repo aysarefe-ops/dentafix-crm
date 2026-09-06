@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { CheckSquare, FileBarChart, Handshake, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -13,21 +14,14 @@ import { cn } from "@/lib/utils";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import getDashboardMenuItem from "./menu-items/Dashboard";
-import getCrmMenuItem from "./menu-items/Crm";
-import getProjectsMenuItem from "./menu-items/Projects";
-import getEmailsMenuItem from "./menu-items/Emails";
-import getReportsMenuItem from "./menu-items/Reports";
-import getDocumentsMenuItem from "./menu-items/Documents";
-import getInvoicesMenuItem from "./menu-items/Invoices";
 import getAdministrationMenuItem from "./menu-items/Administration";
-import getCampaignsMenuItem from "./menu-items/Campaigns";
 
 /**
  * AppSidebar Component - Task Groups 1.2, 2.2-2.7, 3.1, 5.3, 5.4
  *
- * Core sidebar component for NextCRM application layout.
+ * Core sidebar component for DentaFIX CRM application layout.
  * Implements shadcn/ui sidebar pattern with:
- * - Logo and "N" branding symbol with rotation animation
+ * - Logo and "D" branding symbol with rotation animation
  * - Build version display in footer (when expanded)
  * - Navigation with Dashboard and module items
  * - Nav-user section in footer for user profile and actions
@@ -52,7 +46,7 @@ import getCampaignsMenuItem from "./menu-items/Campaigns";
  *
  * Phase 5 Updates (Design Consistency):
  * - Task 5.3: Removed duration-200 from app name animation (uses Tailwind default)
- * - Task 5.3: Kept duration-500 on "N" symbol for intentional brand emphasis
+ * - Task 5.3: Kept duration-500 on "D" symbol for intentional brand emphasis
  * - Task 5.4: Changed build version text-gray-500 to text-muted-foreground for theme support
  *
  * @param modules - Array of enabled modules from system_Modules_Enabled table
@@ -90,28 +84,17 @@ export function AppSidebar({
   const isExpanded = state === "expanded";
 
   const navItems = [
-    getDashboardMenuItem({ title: dict?.dashboard || "Dashboard" }),
-    getCrmMenuItem({ localizations: dict.crm, role: session?.user?.role ?? undefined }),
-    getCampaignsMenuItem({
-      localizations: {
-        title: "Campaigns",
-        campaigns: "All Campaigns",
-        templates: "Templates",
-        targets: "Targets",
-        targetLists: "Target Lists",
-      },
-    }),
-    getProjectsMenuItem({ title: dict?.projects || "Projects" }),
-    getEmailsMenuItem({ title: dict?.emails || "Emails" }),
-    getReportsMenuItem({ title: dict?.reports || "Reports" }),
-    getDocumentsMenuItem({ title: dict?.documents || "Documents" }),
-    getInvoicesMenuItem({ title: dict?.invoices || "Invoices" }),
+    getDashboardMenuItem({ title: "Dashboard" }),
+    { title: "Hasta Adayları", url: "/crm/leads", icon: Users },
+    { title: "Pipeline", url: "/crm/opportunities", icon: Handshake },
+    { title: "Görevler", url: "/projects/tasks", icon: CheckSquare },
+    { title: "Raporlar", url: "/reports", icon: FileBarChart },
   ];
 
   // Administration: admin users only
   if (session?.user?.role === "admin") {
     navItems.push(
-      getAdministrationMenuItem({ title: dict?.settings || "Administration" }),
+      getAdministrationMenuItem({ title: "Administration" }),
     );
   }
 
@@ -133,14 +116,14 @@ export function AppSidebar({
             isExpanded ? "gap-x-4" : "justify-center",
           )}
         >
-          {/* "N" Branding Symbol with rotation animation */}
+          {/* "D" Branding Symbol with rotation animation */}
           <div
             className={cn(
               "flex-shrink-0 border rounded-full px-4 py-2 transition-transform duration-500",
               isExpanded && "rotate-[360deg]",
             )}
           >
-            N
+            D
           </div>
 
           {/* App Name - visible when expanded, hidden when collapsed */}
@@ -150,7 +133,7 @@ export function AppSidebar({
               !isExpanded ? "w-0 opacity-0" : "w-auto opacity-100",
             )}
           >
-            {process.env.NEXT_PUBLIC_APP_NAME || "NextCRM"}
+            {process.env.NEXT_PUBLIC_APP_NAME || "DentaFIX CRM"}
           </h1>
         </div>
       </SidebarHeader>

@@ -1,0 +1,136 @@
+--progress is a global compose flag, better use `docker compose --progress xx build ...
+ Image dentafix-crm-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 504B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 5.10kB done
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "INNGEST_EVENT_KEY") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "INNGEST_SIGNING_KEY") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BETTER_AUTH_SECRET") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BETTER_AUTH_URL") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "MINIO_ACCESS_KEY") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "MINIO_SECRET_KEY") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "EMAIL_ENCRYPTION_KEY") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "OPENAI_API_KEY") (line 36)
+#2 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "RESEND_API_KEY") (line 36)
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-alpine
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 182B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [deps 1/5] FROM docker.io/library/node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#6 resolve docker.io/library/node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 done
+#6 DONE 0.0s
+
+#7 [runner  2/14] RUN apk add --no-cache curl postgresql-client
+#7 CACHED
+
+#8 [runner  3/14] RUN addgroup --system --gid 1001 nodejs &&     adduser --system --uid 1001 nextjs
+#8 CACHED
+
+#9 [runner  4/14] WORKDIR /opt/tools
+#9 CACHED
+
+#10 [runner  5/14] RUN printf '{"name":"nextcrm-tools","version":"0.0.0","private":true}\n' > package.json &&     npm install --no-audit --no-fund       prisma@7.6.0       @prisma/client@7.6.0       @prisma/adapter-pg@7.6.0       pg@8.18.0       tsx@4.21.0       dotenv@17.3.1       typescript@5.9.3 &&     npm cache clean --force
+#10 CACHED
+
+#11 [runner  6/14] WORKDIR /app
+#11 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 13.97MB 2.8s done
+#5 DONE 2.9s
+
+#12 [deps 2/5] WORKDIR /app
+#12 CACHED
+
+#13 [deps 3/5] RUN corepack enable && corepack prepare pnpm@11.20.0 --activate
+#13 CACHED
+
+#14 [deps 4/5] COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
+#14 CACHED
+
+#15 [deps 5/5] RUN pnpm install --frozen-lockfile
+#15 CACHED
+
+#16 [build 4/6] COPY --from=deps /app/node_modules ./node_modules
+#16 CACHED
+
+#17 [build 5/6] COPY . .
+#17 DONE 18.0s
+
+#18 [build 6/6] RUN pnpm prisma generate && pnpm next build
+#18 3.339 Loaded Prisma config from prisma.config.ts.
+#18 3.339 
+#18 3.599 Prisma schema loaded from prisma/schema.prisma.
+#18 6.095 
+#18 6.095 ✔ Generated Prisma Client (v7.6.0) to ./node_modules/.pnpm/@prisma+client@7.6.0_prisma@7.6.0_react-dom@19.2.4_react@19.2.4__react@19.2.4_types-rea_e5da05f9d54b20c89631f381589b11a6/node_modules/@prisma/client in 1.85s
+#18 6.095 
+#18 6.095 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#18 6.095 
+#18 6.095 
+#18 8.887 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#18 8.887 This information is used to shape Next.js' roadmap and prioritize features.
+#18 8.887 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#18 8.888 https://nextjs.org/telemetry
+#18 8.888 
+#18 9.148 ▲ Next.js 16.2.11 (Turbopack)
+#18 9.148 
+#18 9.219   Creating an optimized production build ...
+#18 13.07 Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
+#18 13.07   npx update-browserslist-db@latest
+#18 13.07   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+#18 40.22 ✓ Compiled successfully in 30.6s
+#18 40.48   Running TypeScript ...
+#18 64.59 
+#18 64.59 <--- Last few GCs --->
+#18 64.59 
+#18 64.59 [144:0xffffa70d0000]    23856 ms: Mark-Compact (reduce) 2045.5 (2082.9) -> 2045.4 (2080.4) MB, pooled: 0 MB, 730.60 / 0.00 ms  (+ 10.1 ms in 0 steps since start of marking, biggest step 0.0 ms, walltime since start of marking 752 ms) (average mu = 0.292, 
+#18 64.59 
+#18 64.59 <--- JS stacktrace --->
+#18 64.59 
+#18 64.59 FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+#18 64.59 ----- Native stack trace -----
+#18 64.59 
+#18 64.77 Next.js build worker exited with code: null and signal: SIGABRT
+#18 ERROR: process "/bin/sh -c pnpm prisma generate && pnpm next build" did not complete successfully: exit code: 1
+------
+ > [build 6/6] RUN pnpm prisma generate && pnpm next build:
+64.59 <--- Last few GCs --->
+64.59 
+64.59 [144:0xffffa70d0000]    23856 ms: Mark-Compact (reduce) 2045.5 (2082.9) -> 2045.4 (2080.4) MB, pooled: 0 MB, 730.60 / 0.00 ms  (+ 10.1 ms in 0 steps since start of marking, biggest step 0.0 ms, walltime since start of marking 752 ms) (average mu = 0.292, 
+64.59 
+64.59 <--- JS stacktrace --->
+64.59 
+64.59 FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+64.59 ----- Native stack trace -----
+64.59 
+64.77 Next.js build worker exited with code: null and signal: SIGABRT
+------
+Dockerfile:56
+
+--------------------
+
+  54 |     
+
+  55 |     # Run build steps in a single layer to reduce intermediate images
+
+  56 | >>> RUN pnpm prisma generate && pnpm next build
+
+  57 |     
+
+  58 |     # ============================================
+
+--------------------
+
+failed to solve: process "/bin/sh -c pnpm prisma generate && pnpm next build" did not complete successfully: exit code: 1
+
