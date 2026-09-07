@@ -16,9 +16,14 @@ interface Props {
   entityType: string;
   entityId: string;
   initialData: { data: ActivityWithLinks[]; nextCursor: ActivityCursor | null };
+  copy?: {
+    title: string;
+    create: string;
+    empty: string;
+  };
 }
 
-export function ActivitiesView({ entityType, entityId, initialData }: Props) {
+export function ActivitiesView({ entityType, entityId, initialData, copy }: Props) {
   const [activities, setActivities] = useState<ActivityWithLinks[]>(initialData.data);
   const [cursor, setCursor] = useState<ActivityCursor | null>(initialData.nextCursor);
   const [createOpen, setCreateOpen] = useState(false);
@@ -49,16 +54,16 @@ export function ActivitiesView({ entityType, entityId, initialData }: Props) {
     <TooltipProvider>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between py-3">
-          <CardTitle className="text-base">Activities</CardTitle>
+          <CardTitle className="text-base">{copy?.title ?? "Activities"}</CardTitle>
           <Button size="sm" variant="outline" onClick={() => setCreateOpen(true)}>
             <Plus className="h-4 w-4 mr-1" />
-            Log activity
+            {copy?.create ?? "Log activity"}
           </Button>
         </CardHeader>
         <CardContent className="pt-0">
           {activities.length === 0 ? (
             <p className="text-sm text-muted-foreground py-4 text-center">
-              No activities yet. Log a call, meeting, or note.
+              {copy?.empty ?? "No activities yet. Log a call, meeting, or note."}
             </p>
           ) : (
             <>

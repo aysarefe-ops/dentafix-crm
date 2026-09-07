@@ -66,5 +66,28 @@ export const getLead = async (leadId: string) => {
       },
     },
   });
-  return data ? serializeLead(data) : null;
+  if (!data) return null;
+
+  const metadataUserIds = [data.createdBy, data.updatedBy].filter(
+    (id): id is string => Boolean(id)
+  );
+  const metadataUsers = metadataUserIds.length
+    ? await prismadb.users.findMany({
+        where: { id: { in: metadataUserIds } },
+        select: { id: true, name: true },
+      })
+    : [];
+  const userById = new Map(
+    metadataUsers.map((metadataUser) => [metadataUser.id, metadataUser])
+  );
+
+  return serializeLead({
+    ...data,
+    created_by_user: data.createdBy
+      ? userById.get(data.createdBy) ?? null
+      : null,
+    updated_by_user: data.updatedBy
+      ? userById.get(data.updatedBy) ?? null
+      : null,
+  });
 };

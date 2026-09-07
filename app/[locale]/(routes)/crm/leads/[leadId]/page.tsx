@@ -23,13 +23,13 @@ const LeadDetailPage = async (props: LeadDetailPageProps) => {
 
   return (
     <Container
-      title={`Lead: ${lead?.firstName} ${lead?.lastName}`}
-      description={"Everything you need to know about sales potential"}
+      title={`Hasta Adayı: ${lead?.firstName} ${lead?.lastName}`}
+      description="Hasta adayı bilgileri ve takip süreci"
     >
       <Tabs defaultValue="overview">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger value="overview">Genel Bakış</TabsTrigger>
+          <TabsTrigger value="history">Geçmiş</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <div className="space-y-5">
