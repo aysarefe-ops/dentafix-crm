@@ -1,8 +1,10 @@
 [
-  { "name": "Web" },
-  { "name": "Referral" },
-  { "name": "Cold Call" },
-  { "name": "Email Campaign" },
-  { "name": "Event" },
-  { "name": "Other" }
+  { "name": "Telefon" },
+  { "name": "Facebook" },
+  { "name": "Instagram" },
+  { "name": "Diğer" },
+  { "name": "Referans" },
+  { "name": "Web Sitesi" },
+  { "name": "WhatsApp" },
+  { "name": "Google Ads" }
 ]

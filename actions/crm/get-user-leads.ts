@@ -1,3 +1,4 @@
+import { serializeLead } from "@/lib/crm/lead-patient-fields";
 import { prismadb } from "@/lib/prisma";
 
 export const getUserLeads = async (userId: string) => {
@@ -10,5 +11,5 @@ export const getUserLeads = async (userId: string) => {
       createdAt: "desc",
     },
   });
-  return data;
+  return data.map(serializeLead);
 };

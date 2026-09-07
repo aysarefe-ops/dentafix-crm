@@ -87,6 +87,11 @@ model crm_Leads {
   email             String?
   phone             String?
   description       String?
+  whatsapp_status   String?
+  last_contact_at   DateTime?
+  next_follow_up_at DateTime?
+  quote_amount      Decimal? @db.Decimal(18, 2)
+  appointment_at    DateTime?
   lead_source_id  String?            @db.Uuid
   lead_status_id  String?            @db.Uuid
   lead_type_id    String?            @db.Uuid

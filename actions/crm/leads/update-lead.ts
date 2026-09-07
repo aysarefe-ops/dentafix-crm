@@ -1,4 +1,5 @@
 "use server";
+import { patientLeadSchema, serializeLead, type PatientLeadInput } from "@/lib/crm/lead-patient-fields";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import sendEmail from "@/lib/sendmail";
@@ -27,7 +28,7 @@ export const updateLead = async (data: {
   campaign?: string | null;
   assigned_to?: string;
   accountIDs?: string;
-}) => {
+} & PatientLeadInput) => {
   const {
     id,
     firstName,
@@ -61,6 +62,10 @@ export const updateLead = async (data: {
     if (e instanceof AuthorizationError) return { error: "Forbidden" };
     throw e;
   }
+  const patientFields = patientLeadSchema.safeParse(data);
+  if (!patientFields.success) {
+    return { error: patientFields.error.issues[0]?.message ?? "Invalid patient lead fields" };
+  }
   const userId = user.id;
 
   try {
@@ -77,6 +82,7 @@ export const updateLead = async (data: {
         email,
         phone,
         description,
+        ...patientFields.data,
         lead_source_id: lead_source_id || undefined,
         lead_status_id: lead_status_id || undefined,
         lead_type_id: lead_type_id || undefined,
@@ -118,7 +124,7 @@ export const updateLead = async (data: {
     });
     void inngest.send({ name: "crm/lead.saved", data: { record_id: lead.id } });
     revalidatePath("/[locale]/(routes)/crm/leads", "page");
-    return { data: lead };
+    return { data: serializeLead(lead) };
   } catch (error) {
     console.log("[UPDATE_LEAD]", error);
     return { error: "Failed to update lead" };

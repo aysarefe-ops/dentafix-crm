@@ -49,7 +49,10 @@ export function LeadDataTable<TData, TValue>({
   const columns = createColumns(leadSources, leadStatuses, leadTypes) as ColumnDef<TData, TValue>[];
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({
+      company: false,
+      createdAt: false,
+    });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );

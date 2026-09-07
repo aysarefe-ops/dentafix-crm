@@ -11,6 +11,19 @@ export const leadSchema = z.object({
   updatedAt: z.date().nullable(),
   firstName: z.string().optional().nullable(),
   lastName: z.string(),
-});
+  company: z.string().optional().nullable(),
+  phone: z.string().optional().nullable(),
+  whatsapp_status: z.string().optional().nullable(),
+  next_follow_up_at: z.date().optional().nullable(),
+  appointment_at: z.date().optional().nullable(),
+  quote_amount: z.string().optional().nullable(),
+  lead_source: z.object({ id: z.string(), name: z.string() }).optional().nullable(),
+  lead_status: z.object({ id: z.string(), name: z.string() }).optional().nullable(),
+  lead_type: z.object({ id: z.string(), name: z.string() }).optional().nullable(),
+  assigned_to_user: z.object({
+    id: z.string().optional(),
+    name: z.string().optional().nullable(),
+  }).optional().nullable(),
+}).passthrough();
 
 export type Lead = z.infer<typeof leadSchema>;

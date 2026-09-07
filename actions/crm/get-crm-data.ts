@@ -1,3 +1,4 @@
+import { serializeLead } from "@/lib/crm/lead-patient-fields";
 import { cache } from "react";
 import { prismadb } from "@/lib/prisma";
 import { serializeDecimalsList } from "@/lib/serialize-decimals";
@@ -45,7 +46,7 @@ export const getAllCrmData = cache(async () => {
   const data = {
     accounts,
     opportunities: serializeDecimalsList(opportunities),
-    leads,
+    leads: leads.map(serializeLead),
     contacts,
     contracts: serializeDecimalsList(contracts),
     saleTypes,

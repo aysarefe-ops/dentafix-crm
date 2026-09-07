@@ -1,6 +1,12 @@
 [
-  { "name": "New" },
-  { "name": "Contacted" },
-  { "name": "Qualified" },
-  { "name": "Lost" }
+  { "name": "Yeni Lead" },
+  { "name": "Arandı" },
+  { "name": "Görüşülüyor" },
+  { "name": "Kaybedildi" },
+  { "name": "Ulaşılamadı" },
+  { "name": "Fiyat Verildi" },
+  { "name": "Takip Edilecek" },
+  { "name": "Randevu Aldı" },
+  { "name": "Gelmedi" },
+  { "name": "Tedavi Başladı" }
 ]

@@ -1,3 +1,4 @@
+import { serializeLead } from "@/lib/crm/lead-patient-fields";
 import { cache } from "react";
 import { prismadb } from "@/lib/prisma";
 import {
@@ -18,6 +19,9 @@ export const getLeads = cache(async () => {
   const data = await prismadb.crm_Leads.findMany({
     where: { ...leadReadScopeWhere(user) },
     include: {
+      lead_source: { select: { id: true, name: true } },
+      lead_status: { select: { id: true, name: true } },
+      lead_type: { select: { id: true, name: true } },
       // Include assigned user (uses "LeadAssignedTo" relation)
       assigned_to_user: {
         select: {
@@ -42,5 +46,5 @@ export const getLeads = cache(async () => {
       createdAt: "desc",
     },
   });
-  return data;
+  return data.map(serializeLead);
 });

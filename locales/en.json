@@ -117,9 +117,9 @@
       "empty": "No assigned opportunities found"
     },
     "leads": {
-      "pageTitle": "Leads",
-      "pageDescription": "Everything you need to know about your leads",
-      "viewTitle": "Leads",
+      "pageTitle": "Hasta Adayları",
+      "pageDescription": "Hasta adaylarını tek panelden takip edin.",
+      "viewTitle": "Hasta Adayları",
       "addNew": "Add new lead",
       "sheetTitle": "Create new lead",
       "sheetDescription": "Fill in the details to create a new lead",

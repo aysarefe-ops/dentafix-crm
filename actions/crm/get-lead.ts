@@ -1,3 +1,4 @@
+import { serializeLead } from "@/lib/crm/lead-patient-fields";
 import { prismadb } from "@/lib/prisma";
 import {
   requireAuthenticated,
@@ -65,5 +66,5 @@ export const getLead = async (leadId: string) => {
       },
     },
   });
-  return data;
+  return data ? serializeLead(data) : null;
 };

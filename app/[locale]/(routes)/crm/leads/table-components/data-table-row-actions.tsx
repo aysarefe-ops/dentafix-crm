@@ -85,8 +85,8 @@ export function DataTableRowActions<TData>({
       <Sheet open={updateOpen} onOpenChange={setUpdateOpen}>
         <SheetContent className="w-full md:max-w-[771px] overflow-y-auto">
           <SheetHeader>
-            <SheetTitle>Update lead - {lead?.firstName} {lead?.lastName}</SheetTitle>
-            <SheetDescription>Update lead details</SheetDescription>
+            <SheetTitle>Hasta Adayını Güncelle - {lead?.firstName} {lead?.lastName}</SheetTitle>
+            <SheetDescription>Hasta adayı bilgilerini güncelleyin</SheetDescription>
           </SheetHeader>
           <div className="mt-6 space-y-4">
             <UpdateLeadForm
@@ -116,7 +116,7 @@ export function DataTableRowActions<TData>({
             View
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setUpdateOpen(true)}>
-            Update
+            Güncelle
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpen(true)}>

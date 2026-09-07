@@ -1,3 +1,4 @@
+import { serializeLead } from "@/lib/crm/lead-patient-fields";
 import { prismadb } from "@/lib/prisma";
 import {
   requireAuthenticated,
@@ -33,6 +34,9 @@ export const getLeadsByAccountId = async (accountId: string) => {
       ...leadReadScopeWhere(user),
     },
     include: {
+      lead_source: { select: { id: true, name: true } },
+      lead_status: { select: { id: true, name: true } },
+      lead_type: { select: { id: true, name: true } },
       assigned_to_user: {
         select: {
           name: true,
@@ -43,5 +47,5 @@ export const getLeadsByAccountId = async (accountId: string) => {
       createdAt: "desc",
     },
   });
-  return data;
+  return data.map(serializeLead);
 };

@@ -53,12 +53,12 @@ const LeadsView = ({ data, crmData, accountId }: LeadsViewProps) => {
           <div className="flex space-x-2">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button size="sm" aria-label={t("leads.addNew")} data-testid="add-lead-btn">+</Button>
+                <Button size="sm" aria-label="Yeni Hasta Adayı" data-testid="add-lead-btn">+</Button>
               </SheetTrigger>
               <SheetContent className="w-full md:max-w-[771px] overflow-y-auto">
                 <SheetHeader>
-                  <SheetTitle>{t("leads.sheetTitle")}</SheetTitle>
-                  <SheetDescription>{t("leads.sheetDescription")}</SheetDescription>
+                  <SheetTitle>Yeni Hasta Adayı</SheetTitle>
+                  <SheetDescription>Yeni hasta adayı bilgilerini girin</SheetDescription>
                 </SheetHeader>
                 <div className="mt-6 space-y-4">
                   <NewLeadForm

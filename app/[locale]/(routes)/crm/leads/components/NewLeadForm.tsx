@@ -1,10 +1,14 @@
 "use client";
 
 import { z } from "zod";
+import {
+  patientLeadFormFields,
+  whatsappStatuses,
+  toLeadDateTimeValue,
+} from "@/lib/crm/lead-patient-fields";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -41,24 +45,19 @@ type NewTaskFormProps = {
   onFinish?: () => void;
 };
 
-export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, accountId, onFinish }: NewTaskFormProps) {
-  const t = useTranslations("CrmLeadForm");
-  const c = useTranslations("Common");
+export function NewLeadForm({ leadSources, leadStatuses, leadTypes, accountId, onFinish }: NewTaskFormProps) {
   const { data: session } = useSession();
 
   const formSchema = z.object({
+    ...patientLeadFormFields,
     first_name: z.string().optional(),
-    last_name: z.string().min(1, t("lastNameRequired")).max(30),
-    company: z.string().optional(),
-    jobTitle: z.string().optional(),
-    email: z.string().email(t("emailInvalid")).or(z.literal("")).optional(),
+    last_name: z.string().min(1, "Soyad zorunludur").max(30),
+    email: z.string().email("Geçerli bir e-posta adresi girin").or(z.literal("")).optional(),
     phone: z.string().min(0).max(15).optional(),
     description: z.string().optional(),
     lead_source_id: z.string().optional(),
     lead_status_id: z.string().optional(),
     lead_type_id: z.string().optional(),
-    refered_by: z.string().optional(),
-    campaign: z.string().optional(),
     assigned_to: z.string().optional(),
     accountIDs: z.string().optional(),
   });
@@ -69,18 +68,19 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
+      whatsapp_status: "",
+      last_contact_at: "",
+      next_follow_up_at: "",
+      quote_amount: "",
+      appointment_at: "",
       first_name: "",
       last_name: "",
-      company: "",
-      jobTitle: "",
       email: "",
       phone: "",
       description: "",
       lead_source_id: "",
       lead_status_id: "",
       lead_type_id: "",
-      refered_by: "",
-      campaign: "",
       assigned_to: "",
       accountIDs: accountId ?? "",
     },
@@ -92,11 +92,16 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
   }, [session, form]);
 
   const onSubmit = async (data: NewLeadFormValues) => {
-    const result = await createLead(data);
+    const result = await createLead({
+      ...data,
+      last_contact_at: toLeadDateTimeValue(data.last_contact_at),
+      next_follow_up_at: toLeadDateTimeValue(data.next_follow_up_at),
+      appointment_at: toLeadDateTimeValue(data.appointment_at),
+    });
     if (result?.error) {
       form.setError("root.serverError", { message: result.error });
     } else {
-      toast.success(t("createSuccess"));
+      toast.success("Hasta adayı oluşturuldu");
       form.reset();
       onFinish?.();
     }
@@ -113,7 +118,7 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                 name="first_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("firstName")}</FormLabel>
+                    <FormLabel>Ad</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
@@ -130,7 +135,7 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                 name="last_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("lastName")}</FormLabel>
+                    <FormLabel>Soyad</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
@@ -146,42 +151,10 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="company"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("company")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={form.formState.isSubmitting}
-                        placeholder="NextCRM Inc."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="jobTitle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("jobTitle")}</FormLabel>
-                    <FormControl>
-                      <Input disabled={form.formState.isSubmitting} placeholder="CTO" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("email")}</FormLabel>
+                    <FormLabel>E-posta</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
@@ -198,7 +171,7 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("phone")}</FormLabel>
+                    <FormLabel>Telefon</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
@@ -216,11 +189,11 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{c("description")}</FormLabel>
+                  <FormLabel>Hasta Notu</FormLabel>
                   <FormControl>
                     <Textarea
                       disabled={form.formState.isSubmitting}
-                      placeholder="New NextCRM functionality"
+                      placeholder="Hasta ile ilgili notlar"
                       {...field}
                     />
                   </FormControl>
@@ -234,10 +207,10 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                 name="lead_source_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("leadSource")}</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormLabel>Kaynak</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value ?? ""}>
                       <FormControl>
-                        <SelectTrigger><SelectValue placeholder="Select source…" /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Kaynak seçin…" /></SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {leadSources.map((s) => (
@@ -249,23 +222,7 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="refered_by"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("referredBy")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={form.formState.isSubmitting}
-                        placeholder="Johny Walker"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -273,10 +230,10 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                 name="lead_status_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Lead Status</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormLabel>Durum</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value ?? ""}>
                       <FormControl>
-                        <SelectTrigger><SelectValue placeholder="Select status…" /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Durum seçin…" /></SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {leadStatuses.map((s) => (
@@ -293,10 +250,10 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                 name="lead_type_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Lead Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormLabel>Tedavi İlgisi</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value ?? ""}>
                       <FormControl>
-                        <SelectTrigger><SelectValue placeholder="Select type…" /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Tedavi ilgisi seçin…" /></SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {leadTypes.map((lt) => (
@@ -310,34 +267,18 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="campaign"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("campaign")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={form.formState.isSubmitting}
-                        placeholder="Social networks"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <FormField
                 control={form.control}
                 name="assigned_to"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{c("assignedTo")}</FormLabel>
+                    <FormLabel>Sorumlu Personel</FormLabel>
                     <FormControl>
                       <UserSearchCombobox
                         value={field.value ?? ""}
                         onChange={field.onChange}
-                        placeholder={c("selectUser")}
+                        placeholder="Personel seçin…"
                         disabled={form.formState.isSubmitting}
                       />
                     </FormControl>
@@ -346,34 +287,116 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="accountIDs"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("assignAccount")}</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    disabled={!!accountId}
-                  >
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="whatsapp_status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WhatsApp Durumu</FormLabel>
+                    <Select
+                      value={field.value || "__none"}
+                      onValueChange={(value) => field.onChange(value === "__none" ? "" : value)}
+                      disabled={form.formState.isSubmitting}
+                    >
+                      <FormControl>
+                        <SelectTrigger><SelectValue placeholder="WhatsApp durumu seçin…" /></SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="__none">Belirtilmedi</SelectItem>
+                        {whatsappStatuses.map((status) => (
+                          <SelectItem key={status} value={status}>{status}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="last_contact_at"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Son Görüşme</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("assignAccountPlaceholder")} />
-                      </SelectTrigger>
+                      <Input
+                        type="datetime-local"
+                        step="60"
+                        // Safari shows today's date as a placeholder even when the value is empty.
+                        className={!field.value ? "text-transparent focus:text-foreground" : undefined}
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {accounts.map((account) => (
-                        <SelectItem key={account.id} value={account.id}>
-                          {account.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="next_follow_up_at"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sonraki Takip</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        step="60"
+                        // Safari shows today's date as a placeholder even when the value is empty.
+                        className={!field.value ? "[&:not(:focus)::-webkit-datetime-edit]:opacity-0" : undefined}
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="quote_amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Teklif Tutarı</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01" min="0" max="9999999999999999.99"
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="appointment_at"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Randevu Tarihi</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        step="60"
+                        // Safari shows today's date as a placeholder even when the value is empty.
+                        className={!field.value ? "[&:not(:focus)::-webkit-datetime-edit]:opacity-0" : undefined}
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
         </div>
         <div className="grid gap-2 py-5">
@@ -385,10 +408,10 @@ export function NewLeadForm({ accounts, leadSources, leadStatuses, leadTypes, ac
           <Button disabled={form.formState.isSubmitting} type="submit" data-testid="lead-submit-btn">
             {form.formState.isSubmitting ? (
               <span className="flex items-center animate-pulse">
-                {c("savingData")}
+                Kaydediliyor…
               </span>
             ) : (
-              t("createButton")
+              "Hasta Adayı Oluştur"
             )}
           </Button>
         </div>

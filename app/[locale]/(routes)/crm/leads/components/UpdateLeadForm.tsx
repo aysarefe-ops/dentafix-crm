@@ -1,9 +1,14 @@
 "use client";
 
 import { z } from "zod";
+import {
+  patientLeadFormFields,
+  whatsappStatuses,
+  toLeadDateTimeInput,
+  toLeadDateTimeValue,
+} from "@/lib/crm/lead-patient-fields";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -26,7 +31,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { UserSearchCombobox } from "@/components/ui/user-search-combobox";
-import { AccountSearchCombobox } from "@/components/ui/account-search-combobox";
 import { updateLead } from "@/actions/crm/leads/update-lead";
 
 //TODO: fix all the types
@@ -41,16 +45,15 @@ type NewTaskFormProps = {
 };
 
 export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses, leadTypes }: NewTaskFormProps) {
-  const t = useTranslations("CrmLeadForm");
-  const c = useTranslations("Common");
 
   const formSchema = z.object({
+    ...patientLeadFormFields,
     id: z.uuid(),
     firstName: z.string().optional().nullable(),
-    lastName: z.string().min(1, t("lastNameRequired")).max(30),
+    lastName: z.string().min(1, "Soyad zorunludur").max(30),
     company: z.string().nullable().optional(),
     jobTitle: z.string().nullable().optional(),
-    email: z.string().email(t("emailInvalid")).nullable().optional().or(z.literal("")),
+    email: z.string().email("Geçerli bir e-posta adresi girin").nullable().optional().or(z.literal("")),
     phone: z.string().min(0).max(15).nullable().optional(),
     description: z.string().nullable().optional(),
     lead_source_id: z.string().nullable().optional(),
@@ -65,21 +68,28 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
 
   type NewLeadFormValues = z.infer<typeof formSchema>;
 
-  //TODO: fix this any
-  const form = useForm<any>({
+  const form = useForm<NewLeadFormValues>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
       ...initialData,
-      lead_source_id: initialData.lead_source_id ?? "",
-      lead_status_id: initialData.lead_status_id ?? "",
-      lead_type_id: initialData.lead_type_id ?? "",
+      whatsapp_status: initialData?.whatsapp_status ?? "",
+      last_contact_at: toLeadDateTimeInput(initialData?.last_contact_at).slice(0, 16),
+      next_follow_up_at: toLeadDateTimeInput(initialData?.next_follow_up_at).slice(0, 16),
+      quote_amount: initialData?.quote_amount == null ? "" : String(initialData.quote_amount),
+      appointment_at: toLeadDateTimeInput(initialData?.appointment_at).slice(0, 16),
+      lead_source_id: initialData?.lead_source_id ?? "",
+      lead_status_id: initialData?.lead_status_id ?? "",
+      lead_type_id: initialData?.lead_type_id ?? "",
     },
   });
 
   const onSubmit = async (data: NewLeadFormValues) => {
     const result = await updateLead({
       ...data,
+      last_contact_at: toLeadDateTimeValue(data.last_contact_at),
+      next_follow_up_at: toLeadDateTimeValue(data.next_follow_up_at),
+      appointment_at: toLeadDateTimeValue(data.appointment_at),
       lead_source_id: data.lead_source_id ?? undefined,
       lead_status_id: data.lead_status_id ?? undefined,
       lead_type_id: data.lead_type_id ?? undefined,
@@ -89,13 +99,13 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
     if (result?.error) {
       form.setError("root.serverError", { message: result.error });
     } else {
-      toast.success(t("updateSuccess"));
+      toast.success("Hasta adayı güncellendi");
       setOpen(false);
     }
   };
 
   if (!initialData)
-    return <div>{c("somethingWentWrong")}</div>;
+    return <div>Bir hata oluştu</div>;
 
   return (
     <Form {...form}>
@@ -108,12 +118,13 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("firstName")}</FormLabel>
+                    <FormLabel>Ad</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
                         placeholder="Johny"
                         {...field}
+                        value={field.value ?? ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -125,45 +136,14 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("lastName")}</FormLabel>
+                    <FormLabel>Soyad</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
                         placeholder="Walker"
                         {...field}
+                        value={field.value ?? ""}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="company"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("company")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={form.formState.isSubmitting}
-                        placeholder="NextCRM Inc."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="jobTitle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("jobTitle")}</FormLabel>
-                    <FormControl>
-                      <Input disabled={form.formState.isSubmitting} placeholder="CTO" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -176,12 +156,13 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("email")}</FormLabel>
+                    <FormLabel>E-posta</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
                         placeholder="johny@domain.com"
                         {...field}
+                        value={field.value ?? ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -193,12 +174,13 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("phone")}</FormLabel>
+                    <FormLabel>Telefon</FormLabel>
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
                         placeholder="+11 123 456 789"
                         {...field}
+                        value={field.value ?? ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -211,12 +193,13 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{c("description")}</FormLabel>
+                  <FormLabel>Hasta Notu</FormLabel>
                   <FormControl>
                     <Textarea
                       disabled={form.formState.isSubmitting}
-                      placeholder="New NextCRM functionality"
+                      placeholder="Hasta ile ilgili notlar"
                       {...field}
+                        value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -229,10 +212,10 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 name="lead_source_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("leadSource")}</FormLabel>
+                    <FormLabel>Kaynak</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value ?? ""}>
                       <FormControl>
-                        <SelectTrigger><SelectValue placeholder="Select source…" /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Kaynak seçin…" /></SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {leadSources.map((s) => (
@@ -244,51 +227,19 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="refered_by"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("referredBy")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={form.formState.isSubmitting}
-                        placeholder="Johny Walker"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="campaign"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("campaign")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={form.formState.isSubmitting}
-                        placeholder="Social networks"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <FormField
                 control={form.control}
                 name="lead_type_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Lead Type</FormLabel>
+                    <FormLabel>Tedavi İlgisi</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value ?? ""}>
                       <FormControl>
-                        <SelectTrigger><SelectValue placeholder="Select type…" /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Tedavi ilgisi seçin…" /></SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {leadTypes.map((lt) => (
@@ -307,12 +258,12 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 name="assigned_to"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{c("assignedTo")}</FormLabel>
+                    <FormLabel>Sorumlu Personel</FormLabel>
                     <FormControl>
                       <UserSearchCombobox
                         value={field.value ?? ""}
                         onChange={field.onChange}
-                        placeholder={c("selectUser")}
+                        placeholder="Personel seçin…"
                         disabled={form.formState.isSubmitting}
                       />
                     </FormControl>
@@ -325,10 +276,10 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 name="lead_status_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Lead Status</FormLabel>
+                    <FormLabel>Durum</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value ?? ""}>
                       <FormControl>
-                        <SelectTrigger><SelectValue placeholder="Select status…" /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Durum seçin…" /></SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {leadStatuses.map((s) => (
@@ -341,24 +292,110 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="accountsIDs"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("assignAccount")}</FormLabel>
-                  <FormControl>
-                    <AccountSearchCombobox
-                      value={field.value ?? ""}
-                      onChange={field.onChange}
-                      placeholder={t("assignAccountPlaceholder")}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="whatsapp_status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WhatsApp Durumu</FormLabel>
+                    <Select
+                      value={field.value || "__none"}
+                      onValueChange={(value) => field.onChange(value === "__none" ? "" : value)}
                       disabled={form.formState.isSubmitting}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    >
+                      <FormControl>
+                        <SelectTrigger><SelectValue placeholder="WhatsApp durumu seçin…" /></SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="__none">Belirtilmedi</SelectItem>
+                        {whatsappStatuses.map((status) => (
+                          <SelectItem key={status} value={status}>{status}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="last_contact_at"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Son Görüşme</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        step="60"
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="next_follow_up_at"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sonraki Takip</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        step="60"
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="quote_amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Teklif Tutarı</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01" min="0" max="9999999999999999.99"
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="appointment_at"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Randevu Tarihi</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        step="60"
+                        disabled={form.formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
         </div>
         <div className="grid gap-2 py-5">
@@ -370,10 +407,10 @@ export function UpdateLeadForm({ initialData, setOpen, leadSources, leadStatuses
           <Button disabled={form.formState.isSubmitting} type="submit">
             {form.formState.isSubmitting ? (
               <span className="flex items-center animate-pulse">
-                {c("savingData")}
+                Kaydediliyor…
               </span>
             ) : (
-              t("updateButton")
+              "Hasta Adayını Güncelle"
             )}
           </Button>
         </div>

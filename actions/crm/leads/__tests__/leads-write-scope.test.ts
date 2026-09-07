@@ -62,9 +62,21 @@ describe("updateLead", () => {
   });
 
   it("updates for an owner", async () => {
-    await updateLead({ id: "l-1", lastName: "X" } as any);
+    await updateLead({
+      id: "l-1",
+      lastName: "X",
+      whatsapp_status: "Görüşülüyor",
+      next_follow_up_at: "2026-09-08T09:30:00.000Z",
+      quote_amount: "12500.50",
+    } as any);
     expect(assertLead).toHaveBeenCalledWith(OWNER, "l-1");
-    expect(lUpdate).toHaveBeenCalled();
+    expect(lUpdate).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.objectContaining({
+        whatsapp_status: "Görüşülüyor",
+        next_follow_up_at: new Date("2026-09-08T09:30:00.000Z"),
+        quote_amount: "12500.50",
+      }),
+    }));
   });
 });
 
@@ -93,8 +105,17 @@ describe("createLead", () => {
   });
 
   it("plain create (no linked account) needs only authentication", async () => {
-    await createLead({ last_name: "X" } as any);
+    await createLead({
+      last_name: "X",
+      whatsapp_status: "Yeni",
+      appointment_at: "2026-09-09T11:00:00.000Z",
+    } as any);
     expect(assertAccount).not.toHaveBeenCalled();
-    expect(lCreate).toHaveBeenCalled();
+    expect(lCreate).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.objectContaining({
+        whatsapp_status: "Yeni",
+        appointment_at: new Date("2026-09-09T11:00:00.000Z"),
+      }),
+    }));
   });
 });
