@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 type Lead = Awaited<ReturnType<typeof getLeads>>[number];
 
 const timeZone = "Europe/Istanbul";
+const inactiveFollowUpStatuses = new Set(["Kaybedildi", "Tedavi Başladı"]);
 
 function localDayKey(value: Date | string) {
   const parts = new Intl.DateTimeFormat("en-GB", {
@@ -49,6 +50,10 @@ function leadName(lead: Lead) {
 
 function statusCount(leads: Lead[], status: string) {
   return leads.filter((lead) => lead.lead_status?.name === status).length;
+}
+
+function isActiveFollowUp(lead: Lead) {
+  return !inactiveFollowUpStatuses.has(lead.lead_status?.name ?? "");
 }
 
 function distribution(leads: Lead[], key: "lead_source" | "lead_type") {
@@ -116,7 +121,12 @@ const DashboardPage = async () => {
   }
 
   const upcomingFollowUps = leads
-    .filter((lead) => lead.next_follow_up_at && new Date(lead.next_follow_up_at) >= now)
+    .filter(
+      (lead) =>
+        lead.next_follow_up_at &&
+        new Date(lead.next_follow_up_at) >= now &&
+        isActiveFollowUp(lead)
+    )
     .sort((left, right) => new Date(left.next_follow_up_at!).getTime() - new Date(right.next_follow_up_at!).getTime())
     .slice(0, 5);
   const metrics = [
@@ -126,7 +136,7 @@ const DashboardPage = async () => {
     ["Görüşülüyor", statusCount(leads, "Görüşülüyor"), MessageCircle],
     ["Randevu Aldı", statusCount(leads, "Randevu Aldı"), CalendarCheck],
     ["Tedavi Başladı", statusCount(leads, "Tedavi Başladı"), Stethoscope],
-    ["Takip Bekleyen", statusCount(leads, "Takip Edilecek"), BellRing],
+    ["Takip Bekleyen", leads.filter((lead) => isActiveFollowUp(lead) && lead.lead_status?.name === "Takip Edilecek").length, BellRing],
     ["Bugünkü Randevular", leads.filter((lead) => lead.appointment_at && localDayKey(lead.appointment_at!) === today).length, CalendarDays],
     ["Toplam Teklif", new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 2 }).format(totalQuote), Banknote],
   ] as const;

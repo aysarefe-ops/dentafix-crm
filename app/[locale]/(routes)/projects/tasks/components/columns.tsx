@@ -9,7 +9,13 @@ import { labels, priorities, statuses } from "../data/data";
 import { Task } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import moment from "moment";
+
+const dueDateFormatter = new Intl.DateTimeFormat("tr-TR", {
+  timeZone: "Europe/Istanbul",
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
 
 export const columns: ColumnDef<Task>[] = [
   /*   {
@@ -36,20 +42,23 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "dueDateAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Due date" />
+      <DataTableColumnHeader column={column} title="Bitiş Tarihi" />
     ),
-    cell: ({ row }) => (
-      <div className="w-[80px]">
-        {moment(row.getValue("dueDateAt")).format("YY-MM-DD")}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const dueDateAt = row.getValue("dueDateAt") as Date | string | null;
+      return (
+        <div className="w-[100px]">
+          {dueDateAt ? dueDateFormatter.format(new Date(dueDateAt)) : "-"}
+        </div>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "assigned_user",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Assigned to" />
+      <DataTableColumnHeader column={column} title="Sorumlu" />
     ),
 
     cell: ({ row }) => (
@@ -67,7 +76,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="Başlık" />
     ),
     cell: ({ row }) => {
       const label = labels.find(
@@ -87,7 +96,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "taskStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Durum" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
@@ -114,7 +123,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "priority",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Priority" />
+      <DataTableColumnHeader column={column} title="Öncelik" />
     ),
     cell: ({ row }) => {
       const priority = priorities.find(

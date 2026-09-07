@@ -27,24 +27,24 @@ export const labels = [
 export const statuses = [
   {
     value: "ACTIVE",
-    label: "Active",
+    label: "Aktif",
     icon: QuestionMarkCircledIcon,
   },
   {
     value: "PENDING",
-    label: "Pending",
+    label: "Bekliyor",
     icon: CircleIcon,
   },
   {
     value: "COMPLETE",
-    label: "Complete",
+    label: "Tamamlandı",
     icon: StopwatchIcon,
   },
 ];
 
 export const priorities = [
   {
-    label: "Low",
+    label: "Düşük",
     value: "low",
     icon: ArrowDownIcon,
   },
@@ -54,17 +54,17 @@ export const priorities = [
     icon: ArrowRightIcon,
   },
   {
-    label: "Medium",
+    label: "Orta",
     value: "medium",
     icon: ArrowRightIcon,
   },
   {
-    label: "High",
+    label: "Yüksek",
     value: "high",
     icon: ArrowUpIcon,
   },
   {
-    label: "Critical",
+    label: "Kritik",
     value: "critical",
     icon: ArrowUpIcon,
   },

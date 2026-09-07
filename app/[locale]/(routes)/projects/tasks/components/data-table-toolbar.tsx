@@ -23,7 +23,7 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter tasks..."
+          placeholder="Görevlerde ara..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
@@ -33,14 +33,14 @@ export function DataTableToolbar<TData>({
         {table.getColumn("taskStatus") && (
           <DataTableFacetedFilter
             column={table.getColumn("taskStatus")}
-            title="Status"
+            title="Durum"
             options={statuses}
           />
         )}
         {table.getColumn("priority") && (
           <DataTableFacetedFilter
             column={table.getColumn("priority")}
-            title="Priority"
+            title="Öncelik"
             options={priorities}
           />
         )}
@@ -50,7 +50,7 @@ export function DataTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            Reset
+            Sıfırla
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}
