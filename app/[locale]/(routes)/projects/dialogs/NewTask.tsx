@@ -49,10 +49,11 @@ import { z } from "zod";
 import { createTask } from "@/actions/projects/create-task";
 
 type Props = {
-  boards: any;
+  boards?: any[];
+  showProjectField?: boolean;
 };
 
-const NewTaskDialog = ({ boards }: Props) => {
+const NewTaskDialog = ({ boards = [], showProjectField = true }: Props) => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,7 +66,9 @@ const NewTaskDialog = ({ boards }: Props) => {
   const formSchema = z.object({
     title: z.string().min(3).max(255),
     user: z.string().min(3).max(255),
-    board: z.string().min(3).max(255),
+    board: showProjectField
+      ? z.string().min(3).max(255)
+      : z.string().optional(),
     priority: z.string().min(3).max(10),
     content: z.string().min(3).max(500),
     dueDateAt: z.date(),
@@ -76,6 +79,11 @@ const NewTaskDialog = ({ boards }: Props) => {
   const form = useForm<NewAccountFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: "",
+      content: "",
+      user: "",
+      board: "",
+      priority: "medium",
       dueDateAt: new Date(),
     },
   });
@@ -94,11 +102,15 @@ const NewTaskDialog = ({ boards }: Props) => {
     console.log(data);
     setIsLoading(true);
     try {
-      const result = await createTask(data);
+      const result = await createTask({ ...data, board: data.board || undefined });
       if (result?.error) {
         toast.error(result.error);
       } else {
-        toast.success(`New task: ${data.title}, created successfully`);
+        toast.success(
+          showProjectField
+            ? `New task: ${data.title}, created successfully`
+            : "Görev oluşturuldu"
+        );
       }
     } catch (error: any) {
       toast.error(error?.message);
@@ -123,9 +135,13 @@ const NewTaskDialog = ({ boards }: Props) => {
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t("newTask.title")}</DialogTitle>
+          <DialogTitle>
+            {showProjectField ? t("newTask.title") : "Yeni Görev"}
+          </DialogTitle>
           <DialogDescription>
-            {t("newTask.description")}
+            {showProjectField
+              ? t("newTask.description")
+              : "Yeni görev bilgilerini girin"}
           </DialogDescription>
         </DialogHeader>
         {isLoading ? (
@@ -146,12 +162,15 @@ const NewTaskDialog = ({ boards }: Props) => {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("newTask.nameLabel")}</FormLabel>
+                      <FormLabel>
+                        {showProjectField ? t("newTask.nameLabel") : "Başlık"}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           disabled={isLoading}
                           placeholder={t("newTask.namePlaceholder")}
                           {...field}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -163,12 +182,15 @@ const NewTaskDialog = ({ boards }: Props) => {
                   name="content"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("newTask.descLabel")}</FormLabel>
+                      <FormLabel>
+                        {showProjectField ? t("newTask.descLabel") : "Açıklama"}
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           disabled={isLoading}
                           placeholder={t("newTask.descPlaceholder")}
                           {...field}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -180,7 +202,11 @@ const NewTaskDialog = ({ boards }: Props) => {
                   name="dueDateAt"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>{t("newTask.dueDateLabel")}</FormLabel>
+                      <FormLabel>
+                        {showProjectField
+                          ? t("newTask.dueDateLabel")
+                          : "Bitiş Tarihi"}
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -221,7 +247,9 @@ const NewTaskDialog = ({ boards }: Props) => {
                   name="user"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{c("assignedTo")}</FormLabel>
+                      <FormLabel>
+                        {showProjectField ? c("assignedTo") : "Sorumlu Personel"}
+                      </FormLabel>
                       <FormControl>
                         <UserSearchCombobox
                           value={field.value ?? ""}
@@ -234,42 +262,46 @@ const NewTaskDialog = ({ boards }: Props) => {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="board"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("newTask.projectLabel")}</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t("newTask.projectPlaceholder")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {boards.map((board: any) => (
-                            <SelectItem key={board.id} value={board.id}>
-                              {board.title}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {showProjectField && (
+                  <FormField
+                    control={form.control}
+                    name="board"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t("newTask.projectLabel")}</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value ?? ""}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder={t("newTask.projectPlaceholder")} />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {boards.map((board: any) => (
+                              <SelectItem key={board.id} value={board.id}>
+                                {board.title}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name="priority"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{c("priorityLabel")}</FormLabel>
+                      <FormLabel>
+                        {showProjectField ? c("priorityLabel") : "Öncelik"}
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value ?? ""}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -294,9 +326,11 @@ const NewTaskDialog = ({ boards }: Props) => {
                   variant="outline"
                   onClick={() => setOpen(false)}
                 >
-                  {t("newTask.cancel")}
+                  {showProjectField ? t("newTask.cancel") : "İptal"}
                 </Button>
-                <Button type="submit">{t("newTask.create")}</Button>
+                <Button type="submit">
+                  {showProjectField ? t("newTask.create") : "Oluştur"}
+                </Button>
               </DialogFooter>
             </form>
           </Form>

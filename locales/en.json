@@ -372,9 +372,9 @@
     "dashboardTitle": "Projects dashboard",
     "dashboardDescription": "Overview of all projects",
     "tasks": {
-      "title": "Tasks",
-      "description": "Manage your tasks",
-      "newTask": "New task"
+      "title": "Görevler",
+      "description": "Görevlerinizi yönetin",
+      "newTask": "Yeni Görev"
     },
     "newProject": {
       "trigger": "New project",
@@ -402,19 +402,19 @@
       "successMsg": "Section created successfully"
     },
     "newTask": {
-      "trigger": "New task",
-      "title": "Create new task",
-      "description": "Add a new task to your project",
-      "nameLabel": "Task name",
+      "trigger": "Yeni Görev",
+      "title": "Yeni Görev",
+      "description": "Yeni görev bilgilerini girin",
+      "nameLabel": "Başlık",
       "namePlaceholder": "Enter task name",
-      "descLabel": "Description",
+      "descLabel": "Açıklama",
       "descPlaceholder": "Enter task description",
-      "dueDateLabel": "Due date",
-      "assignedToPlaceholder": "Assign to user",
+      "dueDateLabel": "Bitiş Tarihi",
+      "assignedToPlaceholder": "Sorumlu personel seçin",
       "projectLabel": "Project",
       "projectPlaceholder": "Select project",
-      "cancel": "Cancel",
-      "create": "Create",
+      "cancel": "İptal",
+      "create": "Oluştur",
       "successMsg": "Task created successfully"
     },
     "dataTable": {

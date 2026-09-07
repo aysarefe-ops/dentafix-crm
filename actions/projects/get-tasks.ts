@@ -16,9 +16,19 @@ export const getTasks = async () => {
 
   const data = await prismadb.tasks.findMany({
     where: {
-      assigned_section: {
-        board_relation: boardReadScopeWhere(user),
-      },
+      OR: [
+        {
+          assigned_section: {
+            board_relation: boardReadScopeWhere(user),
+          },
+        },
+        user.role === "admin" || user.role === "manager"
+          ? { section: null }
+          : {
+              section: null,
+              OR: [{ createdBy: user.id }, { user: user.id }],
+            },
+      ],
     },
     include: {
       assigned_user: {

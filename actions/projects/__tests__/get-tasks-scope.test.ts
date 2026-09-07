@@ -25,13 +25,18 @@ describe("getTasks scope", () => {
     expect(prismadb.tasks.findMany).not.toHaveBeenCalled();
   });
 
-  it("user role: where joins through assigned_section.board_relation OR scope", async () => {
+  it("user role: keeps board scope and includes own standalone tasks", async () => {
     mockUser("user", "u1");
     (prismadb.tasks.findMany as jest.Mock).mockResolvedValue([]);
     await getTasks();
     const call = (prismadb.tasks.findMany as jest.Mock).mock.calls[0][0];
-    expect(call.where.assigned_section.board_relation).toBeDefined();
-    expect(Array.isArray(call.where.assigned_section.board_relation.OR)).toBe(true);
+    const [boardTasks, standaloneTasks] = call.where.OR;
+    expect(boardTasks.assigned_section.board_relation).toBeDefined();
+    expect(Array.isArray(boardTasks.assigned_section.board_relation.OR)).toBe(true);
+    expect(standaloneTasks).toEqual({
+      section: null,
+      OR: [{ createdBy: "u1" }, { user: "u1" }],
+    });
   });
 
   it("user role: returns tasks", async () => {
@@ -41,12 +46,14 @@ describe("getTasks scope", () => {
     expect(res).toEqual([{ id: "t1" }]);
   });
 
-  it("manager: where uses bare board_relation (no OR)", async () => {
+  it("manager: can read all standalone tasks and uses bare board scope", async () => {
     mockUser("manager", "m1");
     (prismadb.tasks.findMany as jest.Mock).mockResolvedValue([]);
     await getTasks();
     const call = (prismadb.tasks.findMany as jest.Mock).mock.calls[0][0];
-    expect(call.where.assigned_section.board_relation.OR).toBeUndefined();
-    expect(call.where.assigned_section.board_relation.deletedAt).toBeNull();
+    const [boardTasks, standaloneTasks] = call.where.OR;
+    expect(boardTasks.assigned_section.board_relation.OR).toBeUndefined();
+    expect(boardTasks.assigned_section.board_relation.deletedAt).toBeNull();
+    expect(standaloneTasks).toEqual({ section: null });
   });
 });

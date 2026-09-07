@@ -14,7 +14,7 @@ import {
 export const createTask = async (data: {
   title: string;
   user: string;
-  board: string;
+  board?: string;
   priority: string;
   content: string;
   dueDateAt?: Date;
@@ -33,27 +33,31 @@ export const createTask = async (data: {
 
   const { title, user, board, priority, content, dueDateAt } = data;
 
-  if (!title || !user || !board || !priority || !content) {
+  if (!title || !user || !priority || !content) {
     return { error: "Missing one of the task data" };
   }
 
-  try {
-    await assertCanWriteBoard(authzUser, board);
-  } catch (e) {
-    if (e instanceof AuthorizationError) return { error: "Forbidden" };
-    throw e;
+  if (board) {
+    try {
+      await assertCanWriteBoard(authzUser, board);
+    } catch (e) {
+      if (e instanceof AuthorizationError) return { error: "Forbidden" };
+      throw e;
+    }
   }
 
   try {
-    const sectionId = await prismadb.sections.findFirst({
-      where: { board },
-      orderBy: { position: "asc" },
-    });
+    const sectionId = board
+      ? await prismadb.sections.findFirst({
+          where: { board },
+          orderBy: { position: "asc" },
+        })
+      : null;
 
-    if (!sectionId) return { error: "No section found" };
+    if (board && !sectionId) return { error: "No section found" };
 
     const tasksCount = await prismadb.tasks.count({
-      where: { section: sectionId.id },
+      where: { section: sectionId?.id ?? null },
     });
 
     const task = await prismadb.tasks.create({
@@ -63,7 +67,7 @@ export const createTask = async (data: {
         title,
         content,
         dueDateAt,
-        section: sectionId.id,
+        section: sectionId?.id,
         createdBy: session.user.id,
         updatedBy: session.user.id,
         position: tasksCount > 0 ? tasksCount : 0,
@@ -72,13 +76,15 @@ export const createTask = async (data: {
       },
     });
 
-    await prismadb.boards.update({
-      where: { id: board },
-      data: { updatedAt: new Date() },
-    });
+    if (board) {
+      await prismadb.boards.update({
+        where: { id: board },
+        data: { updatedAt: new Date() },
+      });
+    }
 
     // Send email notification if assigning to a different user
-    if (user !== session.user.id) {
+    if (user !== session.user.id && board) {
       try {
         let resend;
         try {

@@ -3,12 +3,11 @@ import Container from "../../components/ui/Container";
 import { getTasks } from "@/actions/projects/get-tasks";
 import { TasksDataTable } from "./components/data-table";
 import { columns } from "./components/columns";
-
-import { Button } from "@/components/ui/button";
+import NewTaskDialog from "../dialogs/NewTask";
 import { getTranslations } from "next-intl/server";
 
 const TasksPage = async () => {
-  const tasks: any = await getTasks();
+  const tasks = await getTasks();
   const t = await getTranslations("ProjectsPage");
 
   return (
@@ -17,10 +16,10 @@ const TasksPage = async () => {
       description={t("tasks.description")}
     >
       <div className="py-5">
-        <Button>{t("tasks.newTask")}</Button>
+        <NewTaskDialog showProjectField={false} />
       </div>
       <div>
-        <TasksDataTable data={tasks} columns={columns} />
+        <TasksDataTable data={tasks as any} columns={columns} />
       </div>
     </Container>
   );

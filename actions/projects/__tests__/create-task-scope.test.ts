@@ -58,6 +58,23 @@ describe("createTask scope", () => {
     expect(prismadb.tasks.create).toHaveBeenCalled();
   });
 
+  it("creates a standalone task when no board is supplied", async () => {
+    mockUser("user", "u1");
+    (prismadb.tasks.count as jest.Mock).mockResolvedValue(0);
+    (prismadb.tasks.create as jest.Mock).mockResolvedValue({ id: "t1" });
+
+    const res = await createTask({ ...args, board: undefined });
+
+    expect(res).toEqual({ success: true });
+    expect(prismadb.sections.findFirst).not.toHaveBeenCalled();
+    expect(prismadb.boards.update).not.toHaveBeenCalled();
+    expect(prismadb.tasks.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ section: undefined }),
+      })
+    );
+  });
+
   it("manager bare scope creates task", async () => {
     mockUser("manager", "m1");
     (prismadb.boards.findFirst as jest.Mock).mockResolvedValue({ id: "b1" });
